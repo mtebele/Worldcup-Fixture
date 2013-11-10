@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mensajes.h"
+#include "sistema.h"
 
 #define CANT_COMANDOS 12
 #define MAX_PAL 5

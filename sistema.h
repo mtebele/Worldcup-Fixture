@@ -9,14 +9,15 @@
 #include "equipo.h"
 #include "abb.h"
 #include "hash.h"
+#include "lista.h"
+#include "heap.h"
 
 /******************************************************************
  *                DEFINICION DE LOS TIPOS DE DATOS
  ******************************************************************/
 
 typedef struct sistema sistema_t;
-typedef enum {OK, IDC_REPETIDO, IDC_NOEXISTE, PAD_INSC, PAD_NOINSC, SES_NULA, SES_ENCURSO, CUR_SEL, ACC_DES,
-		      REGULAR, CONDIC, SES_NOINS, SES_REGULAR, SES_CONDIC, INS_NOEXISTE, ERROR, NONE} resultado_t;
+typedef enum {OK, EQUIPO_NOINSCRIPTO, NONE} resultado_t;
 		      
 // Determinará el criterio de comparación entre claves.
 // Pre: las cadenas fueron creadas.
@@ -39,7 +40,7 @@ sistema_t* sistema_crear();
 
 resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]);
 
-resultado_t sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[]);
+lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[]);
 
 resultado_t sistema_listar_goleador(sistema_t* sistema);
 

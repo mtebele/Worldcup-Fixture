@@ -23,18 +23,10 @@ jugador_t *jugador_crear(char* nombre, int dorsal)
 	jugador_t *jugador = malloc(sizeof(jugador_t));
 	if (!jugador) return NULL;
 	jugador->nombre = strdup(nombre);
-	
-	// TE PARECE AGREGAR ESTO?
-	/*if (!jugador->nombre)
-	{
-		free(jugador);
-		return NULL;	
-	}*/
-
 	jugador->dorsal = dorsal;
 	jugador->goles = 0;
 
-	return jugador;	
+	return jugador;
 }
 
 int jugador_dorsal(jugador_t *jugador)
