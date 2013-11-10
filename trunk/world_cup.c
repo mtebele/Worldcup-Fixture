@@ -16,14 +16,11 @@ char *strdup(const char *s)
 {
     char *n = malloc(strlen(s) + 1);
     if (n == NULL) return NULL;
-    strcpy(n, s);
+    strcpy(n, s); 
     return n;
 }
 
-/* Programa principal. */
-#include <stdio.h>
-#include <stdlib.h>
- 
+/* Programa principal. */ 
 int main(int argc, char *argv[])
 {
 	FILE *archivo;
