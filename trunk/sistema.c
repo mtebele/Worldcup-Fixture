@@ -44,11 +44,23 @@ sistema_t* sistema_crear(sistema_comparar_clave_t cmp, sistema_destruir_dato_t d
 
 resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[])
 {
+	char* idr = vec_parametros[0];
+	int gloc = atoi(vec_parametros[1]);
+	int gvis = atoi(vec_parametros[2]);
+	for (int i = 0; i < gloc; i++) {
+		// GOLES LOCAL
+	}
+	for (int i = 0; i < gvis; i++) {
+		// GOLES VISITANTE
+	}
+	
+	// TODO
 	return NONE;
 }
 
 resultado_t sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 {
+	
 	return NONE;
 }
 
