@@ -57,3 +57,8 @@ void equipo_destruir(equipo_t *equipo)
 	free(equipo->nombre);
 	free(equipo);
 }
+
+equipo_t* equipo_obtener(char* nombre)
+{
+	
+}
