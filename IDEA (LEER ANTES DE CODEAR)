@@ -1,0 +1,65 @@
+Básicamente el flujo del programa sería
+
+1- Crear la "base de datos" - mundial_crear
+	a- Guardo los jugadores en un hash
+	b- Guardo los equipos en un hash (los equipos deben apuntar a los jugadores
+	   de manera tal que el puntero del jugador sea el mismo para ambos hashes.) 
+// NO ENTENDI :P 
+// Y SI HACEMOS UN SOLO HASH DONDE LA CLAVE SEA EL NOMBRE DEL EQUIPO Y EL DATO SEA UNA LISTA DE LOS JUGADORES?
+	c- Armo un fixture (¿¿hash, abb, vector??)
+// ABB
+	d- Creo un heap de goleadores (la funcion comparadora sería mirando los goles)
+2- Leer comando
+3- Ejecutar Servicio
+4- Romper todo
+
+--------------------------------------------------------------------------------
+listar_jugadores
+	Acá tenemos el problema máximo: Tenemos dos criterios de ordenamiento de los
+	listados. Al tener los equipos en un hash, accedemos de una al equipo, pero
+	el ordenamiento por nombre se nos complica si usamos solo un vector. La otra
+	que se me ocurrió es hacer un abb en equipo con los jugadores, pero estaría-
+	mos poniendo la misma información dos veces. Una vez que resolvamos eso, la
+	solución es "trivial" 
+// EL TEMA ES QUE SI HACEMOS UN ABB DE EQUIPOS, EL ACCESO SERIA LOGN.
+// EL ORDEN POR DORSAL YA LO TENEMOS POR DEFAULT (VIENE ORDENADO EL ARCHIVO), EL OTRO ORDEN HABRIA QUE VER..
+
+listar_goleador
+	Veo el máximo del heap de goleadores (el enunciado es ambiguo, así que
+	tiramos uno solo y a la mierda)
+// SI, EN CLASE HABIAN DICHO QUE ERA 1 SOLO.
+	
+goles jugador
+	Hash de jugadores, veo goles, devuelvo. (Con este, podría considerarse que
+	el tipo jugador podría tener un atributo equipo, de hecho creo que sería 
+	bueno).
+// CLARO, DEBERIA TENER UN ATRIBUTO EQUIPO LA CLASE JUGADOR.
+
+mostrar_resultado
+	Obviamente sale del fixture. Dependerá de cómo lo implementemos. Puede ser
+	con un abb, con un vector o con un hash.
+// HABIAN DICHO EN CLASE QUE EL FIXTURE ERA ABB. ASI, LA BUSQUEDA ES LOGN :)
+
+--------------------------------------------------------------------------------
+Bueno, el "getting method" del archivo más o menos está, te dejé un ejemplo de 
+lo que hace printeando lo que contiene el mismo para que puedas pasarlo a las 
+estructuras adecuadas.
+
+El parseo lo mismo, ya está hecho, sólo hay que hacer el if grande para los
+servicios.
+
+Los mensajes también, hay que adaptar alguno que otro según lo que devuelvan
+las funciones consultoras.
+
+Creo que la clave es saber cómo representamos el fixture y cómo resolvemos el 
+tema de la organización por dorsal o por nombre, según la consulta.
+
+Si ves que estoy mandando fruta en algo, no dudes en cambiarlo.
+
+// OKA!
+
+Saludos, 
+
+Lucas P. 
+
+// PD: QUE GOL SE HIZO EL CHIQUI PEREZ.. PARA MATARLO :@
