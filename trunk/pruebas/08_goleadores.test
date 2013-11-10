@@ -1,0 +1,43 @@
+#equiposMundial2010.txt
+<agregar_resultado 8a,2,1,9,9,17
+>OK
+<listar_goleador
+>Suarez Luis: Uruguay Goles: 2
+<agregar_resultado 8b,1,2,10,23,3
+>OK
+<agregar_resultado 4a,5,3,10,10,6,19,13,11,3,10
+>OK
+<agregar_resultado 8c,2,1,11,10,11
+>OK
+<agregar_resultado 8d,3,0,4,9,11
+>OK
+<agregar_resultado 4b,2,1,10,10,11
+>OK
+<listar_goleador
+>Sneijder Wesley: Holanda Goles: 3
+<agregar_resultado 2a,2,3,10,16,5,10,11
+>OK
+<agregar_resultado 8e,3,1,11,9,11,14
+>OK
+<agregar_resultado 8f,4,1,11,10,13,13,15
+>OK
+<listar_goleador
+>Sneijder Wesley: Holanda Goles: 4
+<agregar_resultado 4c,0,4,13,11,11,3
+>OK
+<agregar_resultado 8g,5,3,8,19,16,18,7,7,17,18
+>OK
+<listar_goleador
+>Sneijder Wesley: Holanda Goles: 4
+<agregar_resultado 8h,1,0,7
+>OK
+<agregar_resultado 4d,0,1,7
+>OK
+<agregar_resultado 2b,0,1,5
+>OK
+<listar_goleador
+>Sneijder Wesley: Holanda Goles: 4
+<agregar_resultado 1a,0,1,6
+>OK
+<listar_goleador
+>Sneijder Wesley: Holanda Goles: 4

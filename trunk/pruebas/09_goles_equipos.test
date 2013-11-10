@@ -1,0 +1,199 @@
+#equiposMundial2006.txt
+<listar_jugadores dorsal Argentina
+>Abbondanzieri Roberto,1: Goles: 0
+>Ayala Roberto,2: Goles: 0
+>Sorin Juan Pablo,3: Goles: 0
+>Coloccini Fabricio,4: Goles: 0
+>Cambiasso Esteban,5: Goles: 0
+>Heinze Gabriel,6: Goles: 0
+>Saviola Javier,7: Goles: 0
+>Mascherano Javier,8: Goles: 0
+>Crespo Hernan,9: Goles: 0
+>Riquelme Juan Roman,10: Goles: 0
+>Tevez Carlos,11: Goles: 0
+>Franco Leo,12: Goles: 0
+>Scaloni Lionel,13: Goles: 0
+>Palacio Rodrigo,14: Goles: 0
+>Milito Gabriel,15: Goles: 0
+>Aimar Pablo,16: Goles: 0
+>Cufre Leandro,17: Goles: 0
+>Rodriguez Maxi,18: Goles: 0
+>Messi Lionel,19: Goles: 0
+>Cruz Julio,20: Goles: 0
+>Burdisso Nicolas,21: Goles: 0
+>Gonzalez Lucho,22: Goles: 0
+>Ustari Óscar,23: Goles: 0
+<agregar_resultado 8a,2,0,20,20
+>OK
+<agregar_resultado 8b,2,1,9,18,4
+>OK
+<listar_jugadores dorsal Argentina
+>Abbondanzieri Roberto,1: Goles: 0
+>Ayala Roberto,2: Goles: 0
+>Sorin Juan Pablo,3: Goles: 0
+>Coloccini Fabricio,4: Goles: 0
+>Cambiasso Esteban,5: Goles: 0
+>Heinze Gabriel,6: Goles: 0
+>Saviola Javier,7: Goles: 0
+>Mascherano Javier,8: Goles: 0
+>Crespo Hernan,9: Goles: 1
+>Riquelme Juan Roman,10: Goles: 0
+>Tevez Carlos,11: Goles: 0
+>Franco Leo,12: Goles: 0
+>Scaloni Lionel,13: Goles: 0
+>Palacio Rodrigo,14: Goles: 0
+>Milito Gabriel,15: Goles: 0
+>Aimar Pablo,16: Goles: 0
+>Cufre Leandro,17: Goles: 0
+>Rodriguez Maxi,18: Goles: 1
+>Messi Lionel,19: Goles: 0
+>Cruz Julio,20: Goles: 0
+>Burdisso Nicolas,21: Goles: 0
+>Gonzalez Lucho,22: Goles: 0
+>Ustari Óscar,23: Goles: 0
+<agregar_resultado 8c,1,0,10
+>OK
+<agregar_resultado 8d,0,3,15,11,9
+>OK
+<agregar_resultado 8e,1,0,7
+>OK
+<agregar_resultado 8f,1,0,18
+>OK
+<agregar_resultado 8g,3,0,9,7,11
+>OK
+<agregar_resultado 8h,1,3,21,22,4,10
+>OK
+<agregar_resultado 4a,5,3,11,10,13,20,18,2,20,18
+>OK
+<listar_jugadores nombre Argentina
+>Abbondanzieri Roberto,1: Goles: 0
+>Aimar Pablo,16: Goles: 0
+>Ayala Roberto,2: Goles: 1
+>Burdisso Nicolas,21: Goles: 0
+>Cambiasso Esteban,5: Goles: 0
+>Coloccini Fabricio,4: Goles: 0
+>Crespo Hernan,9: Goles: 1
+>Cruz Julio,20: Goles: 1
+>Cufre Leandro,17: Goles: 0
+>Franco Leo,12: Goles: 0
+>Gonzalez Lucho,22: Goles: 0
+>Heinze Gabriel,6: Goles: 0
+>Mascherano Javier,8: Goles: 0
+>Messi Lionel,19: Goles: 0
+>Milito Gabriel,15: Goles: 0
+>Palacio Rodrigo,14: Goles: 0
+>Riquelme Juan Roman,10: Goles: 0
+>Rodriguez Maxi,18: Goles: 2
+>Saviola Javier,7: Goles: 0
+>Scaloni Lionel,13: Goles: 0
+>Sorin Juan Pablo,3: Goles: 0
+>Tevez Carlos,11: Goles: 0
+>Ustari Óscar,23: Goles: 0
+<listar_jugadores dorsal Alemania
+>Lehmann Jens,1: Goles: 0
+>Jansen Marcell,2: Goles: 0
+>Friedrich Arne,3: Goles: 0
+>Huth Robert,4: Goles: 0
+>Kehl Sebastian,5: Goles: 0
+>Nowotny Jens,6: Goles: 0
+>Schweinsteiger Bastian,7: Goles: 0
+>Frings Torsten,8: Goles: 0
+>Hanke Mike,9: Goles: 0
+>Neuville Oliver,10: Goles: 1
+>Klose Miroslav,11: Goles: 1
+>Kahn Oliver,12: Goles: 0
+>Ballack Michael,13: Goles: 1
+>Asamoah Gerald,14: Goles: 0
+>Hitzlsperger Thomas,15: Goles: 0
+>Lahm Philipp,16: Goles: 0
+>Mertesacker Per,17: Goles: 0
+>Borowski Tim,18: Goles: 1
+>Schneider Bernd,19: Goles: 0
+>Podolski Lukas,20: Goles: 3
+>Metzelder Christoph,21: Goles: 0
+>Odonkor David,22: Goles: 0
+>Hildebrand Timo,23: Goles: 0
+<agregar_resultado 4b,3,0,19,10,10
+>OK
+<agregar_resultado 4c,1,3,16,11,23,17
+>OK
+<agregar_resultado 4d,0,1,12
+>OK
+<agregar_resultado 2a,0,2,3,7
+>OK
+<listar_jugadores dorsal Alemania
+>Lehmann Jens,1: Goles: 0
+>Jansen Marcell,2: Goles: 0
+>Friedrich Arne,3: Goles: 0
+>Huth Robert,4: Goles: 0
+>Kehl Sebastian,5: Goles: 0
+>Nowotny Jens,6: Goles: 0
+>Schweinsteiger Bastian,7: Goles: 0
+>Frings Torsten,8: Goles: 0
+>Hanke Mike,9: Goles: 0
+>Neuville Oliver,10: Goles: 1
+>Klose Miroslav,11: Goles: 1
+>Kahn Oliver,12: Goles: 0
+>Ballack Michael,13: Goles: 1
+>Asamoah Gerald,14: Goles: 0
+>Hitzlsperger Thomas,15: Goles: 0
+>Lahm Philipp,16: Goles: 0
+>Mertesacker Per,17: Goles: 0
+>Borowski Tim,18: Goles: 1
+>Schneider Bernd,19: Goles: 0
+>Podolski Lukas,20: Goles: 3
+>Metzelder Christoph,21: Goles: 0
+>Odonkor David,22: Goles: 0
+>Hildebrand Timo,23: Goles: 0
+<listar_jugadores dorsal Italia
+>Buffon Gianluigi,1: Goles: 0
+>Zaccardo Cristian,2: Goles: 0
+>Grosso Fabio,3: Goles: 1
+>De Rossi Daniele,4: Goles: 0
+>Cannavaro Fabio,5: Goles: 0
+>Barzagli Andrea,6: Goles: 0
+>Del Piero Alessandro,7: Goles: 1
+>Gattuso Gennaro,8: Goles: 0
+>Toni Luca,9: Goles: 0
+>Totti Francesco,10: Goles: 3
+>Gilardino Alberto,11: Goles: 0
+>Peruzzi Angelo,12: Goles: 0
+>Nesta Alessandro,13: Goles: 0
+>Amelia Marco,14: Goles: 0
+>Iaquinta Vincenzo,15: Goles: 0
+>Camoranesi Mauro,16: Goles: 0
+>Barone Simone,17: Goles: 0
+>Inzaghi Filippo,18: Goles: 0
+>Zambrotta Gianluca,19: Goles: 1
+>Perrotta Simone,20: Goles: 0
+>Pirlo Andrea,21: Goles: 0
+>Oddo Massimo,22: Goles: 0
+>Materazzi Marco,23: Goles: 0
+<agregar_resultado 2b,0,1,10
+>OK
+<agregar_resultado 1a,6,4,23,21,23,4,7,3,10,11,3,19
+>OK
+<listar_jugadores nombre Italia
+>Amelia Marco,14: Goles: 0
+>Barone Simone,17: Goles: 0
+>Barzagli Andrea,6: Goles: 0
+>Buffon Gianluigi,1: Goles: 0
+>Camoranesi Mauro,16: Goles: 0
+>Cannavaro Fabio,5: Goles: 0
+>De Rossi Daniele,4: Goles: 1
+>Del Piero Alessandro,7: Goles: 2
+>Gattuso Gennaro,8: Goles: 0
+>Gilardino Alberto,11: Goles: 0
+>Grosso Fabio,3: Goles: 2
+>Iaquinta Vincenzo,15: Goles: 0
+>Inzaghi Filippo,18: Goles: 0
+>Materazzi Marco,23: Goles: 2
+>Nesta Alessandro,13: Goles: 0
+>Oddo Massimo,22: Goles: 0
+>Perrotta Simone,20: Goles: 0
+>Peruzzi Angelo,12: Goles: 0
+>Pirlo Andrea,21: Goles: 1
+>Toni Luca,9: Goles: 0
+>Totti Francesco,10: Goles: 3
+>Zaccardo Cristian,2: Goles: 0
+>Zambrotta Gianluca,19: Goles: 1
