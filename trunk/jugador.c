@@ -22,7 +22,7 @@ jugador_t *jugador_crear(char* nombre, int dorsal)
 {
 	jugador_t *jugador = malloc(sizeof(jugador_t));
 	if (!jugador) return NULL;
-	jugador->nombre = strdup(nombre);
+	jugador->nombre = nombre; //strdup(nombre);
 	jugador->dorsal = dorsal;
 	jugador->goles = 0;
 
@@ -37,6 +37,11 @@ int jugador_dorsal(jugador_t *jugador)
 char* jugador_nombre(jugador_t *jugador)
 {
 	return jugador->nombre; //strdup?
+}
+
+int jugador_goles(jugador_t *jugador)
+{
+	return jugador->goles;
 }
 
 void jugador_agregar_goles(jugador_t *jugador, int goles)

@@ -42,4 +42,6 @@ char* equipo_nombre(equipo_t *equipo);
 // Post: El equipo es destruido.
 void equipo_destruir(equipo_t *equipo);
 
+jugador_t** equipo_plantel(equipo_t *equipo);
+
 #endif // EQUIPO_H

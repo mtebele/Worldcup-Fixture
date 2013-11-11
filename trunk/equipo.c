@@ -58,7 +58,7 @@ void equipo_destruir(equipo_t *equipo)
 	free(equipo);
 }
 
-equipo_t* equipo_obtener(char* nombre)
+jugador_t** equipo_plantel(equipo_t *equipo)
 {
-	
+	return equipo->plantel;
 }
