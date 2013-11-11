@@ -19,6 +19,15 @@ struct jugador {
 		IMPLEMENTACION PRIMITIVAS DE JUGADOR
 ****************************************************/
 
+// Clona una cadena con memoria dinámica
+char *strdup(const char *s)
+{
+    char *n = malloc(strlen(s) + 1);
+    if(n == NULL) return NULL;
+    strcpy(n, s);
+    return n;
+}
+
 jugador_t *jugador_crear(char *nombre, char *equipo, int dorsal)
 {
 	jugador_t *jugador = malloc(sizeof(jugador_t));

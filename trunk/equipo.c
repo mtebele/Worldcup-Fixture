@@ -20,6 +20,15 @@ struct equipo {
 		IMPLEMENTACION PRIMITIVAS DE EQUIPO
 ****************************************************/
 
+// Clona una cadena con memoria dinámica
+char *strdup(const char *s)
+{
+    char *n = malloc(strlen(s) + 1);
+    if(n == NULL) return NULL;
+    strcpy(n, s);
+    return n;
+}
+
 equipo_t *equipo_crear(char* nombre)
 {
 	equipo_t *equipo = malloc(sizeof(equipo_t));

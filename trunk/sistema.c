@@ -83,7 +83,7 @@ sistema_t* sistema_crear(sistema_comparar_clave_t cmp, sistema_destruir_dato_t d
 
 resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[])
 {
-	char* idr = vec_parametros[0];
+	//char* idr = vec_parametros[0];
 	int gloc = atoi(vec_parametros[1]);
 	int gvis = atoi(vec_parametros[2]);
 	for (int i = 0; i < gloc; i++) {
@@ -148,7 +148,7 @@ char** sistema_listar_goleador(sistema_t* sistema)
 	jugador_t *jugador = heap_ver_max(sistema->goleadores);
 	if (!jugador) return NULL;
 
-	char *datos[3];
+	char** datos = malloc(3 * sizeof(char*));
 	datos[0] = jugador_nombre(jugador);
 	datos[1] = jugador_equipo(jugador);
 	sprintf(datos[2], "%d", jugador_dorsal(jugador));
@@ -160,7 +160,7 @@ char** sistema_goles_jugador(sistema_t* sistema, char* nombre)
 	jugador_t* jugador = hash_obtener(sistema->jugadores, nombre);
 	if (jugador == NULL) return NULL;
 	
-	char *datos[3];
+	char** datos = malloc(3 * sizeof(char*));
 	sprintf(datos[0], "%d", jugador_dorsal(jugador));
 	datos[1] = jugador_equipo(jugador);
 	sprintf(datos[2], "%d", jugador_goles(jugador));
@@ -179,6 +179,7 @@ char* sistema_mostrar_resultado(sistema_t* sistema, char* idr)
 	int goles_vis = partido_goles_vis(partido);
 	sprintf(linea, "%s,%d: %s Goles: %d", eq_loc, goles_loc, eq_vis, goles_vis);
 	return linea;
+	return NULL;
 }
 
 bool sistema_agregar_equipo(sistema_t* sistema, char* nombre)
