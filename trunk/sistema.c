@@ -30,6 +30,15 @@ int cmp_max(const void *s1, const void *s2)
 	if (*(int*)s1 > *(int*)s2) return 1;
 	return 0;
 }
+
+// Clona una cadena con memoria dinámica
+char *strdup(const char *s)
+{
+    char *n = malloc(strlen(s) + 1);
+    if(n == NULL) return NULL;
+    strcpy(n, s);
+    return n;
+}
  
  /******************************************************************
  *                IMPLEMENTACION DE LAS PRIMITIVAS
@@ -117,13 +126,14 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 
 char** sistema_listar_goleador(sistema_t* sistema)
 {
-	jugador_t *jug = heap_ver_max(sistema->goleadores);
-	if (!jug) return NULL;
+	jugador_t *jugador = heap_ver_max(sistema->goleadores);
+	if (!jugador) return NULL;
 
 	char *datos[3];
-	datos[0] = jugador_nombre(jug);
-	datos[1] = jugador_equipo(jug);
-	datos[2] = jugador_dorsal(jug);
+	datos[0] = jugador_nombre(jugador);
+	datos[1] = jugador_equipo(jugador);
+	sprintf(datos[2], "%d", jugador_dorsal(jugador));
+	//datos[2] = jugador_dorsal(jugador);
 	return datos;
 }
 
@@ -137,7 +147,7 @@ char* sistema_goles_jugador(sistema_t* sistema, char* nombre)
 	char* equipo = jugador_equipo(jugador);
 	int goles = jugador_goles(jugador);
 	sprintf(linea, "%s,%d: %s Goles: %d", nombre, dorsal, equipo, goles);
-	return linea;	
+	return strdup(linea); //strdup?
 }
 
 char* sistema_mostrar_resultado(sistema_t* sistema, char* idr)
