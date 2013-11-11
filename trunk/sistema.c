@@ -19,9 +19,20 @@ struct sistema
 };
 
 /******************************************************************
+ *                		FUNCIONES AUXILIARES
+ ******************************************************************/
+
+int cmp_max(const void *s1, const void *s2)
+{
+	if (*(int*)s1 < *(int*)s2) return -1;
+	if (*(int*)s1 > *(int*)s2) return 1;
+	return 0;
+}
+ 
+ /******************************************************************
  *                IMPLEMENTACION DE LAS PRIMITIVAS
  ******************************************************************/
- 
+  
 // Crea un sistema.
 // Post: devuelve un nuevo sistema vacío.
 sistema_t* sistema_crear(sistema_comparar_clave_t cmp, sistema_destruir_dato_t destruir_dato)
@@ -46,6 +57,14 @@ sistema_t* sistema_crear(sistema_comparar_clave_t cmp, sistema_destruir_dato_t d
 		free(sistema);
 		return NULL;
 	}
+	sistema->goleadores = heap_crear(cmp_max);
+	if (sistema->goleadores == NULL) {
+		free(sistema->fixture);
+		free(sistema->jugadores);
+		free(sistema->equipos);
+		free(sistema);
+		return NULL;
+	}
 	sistema->comparar = cmp;
 	sistema->destruir_dato = destruir_dato;
 	return sistema;
@@ -67,6 +86,7 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 	return NONE;
 }
 
+// FALTA ORDENAR POR NOMBRE
 lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 {
 	/*char* orden = vec_parametros[0];
