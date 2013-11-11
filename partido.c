@@ -9,62 +9,69 @@
 ****************************************************/
 
 struct partido {
+	char *idr;
 	bool jugado;
-	char *loc;
-	char *vis;
-	int goles_loc;
-	int goles_vis;
+	char *local;
+	char *visitante;
+	int goles_local;
+	int goles_visitante;
 };
 
 /***************************************************
 		IMPLEMENTACION PRIMITIVAS DE JUGADOR
 ****************************************************/
 
+// Clona una cadena con memoria dinámica.
+char *strdup(const char *s)
+{
+    char *n = malloc(strlen(s) + 1);
+    if (n == NULL) return NULL;
+    strcpy(n, s);
+    return n;
+}
+
 partido_t *partido_crear(const char *idr)
 {
 	partido_t *partido = malloc(sizeof(partido_t));
-	if(!partido) return NULL;
+	if (!partido) return NULL;
 	partido->idr = strdup(idr);
-	if(!partido->idr)
-	{
+	if (!partido->idr) {
 		free(partido);
 		return NULL;
 	}
-	partido->loc = NULL;
-	partido->vis = NULL;
-	partido->goles_loc = -1;
-	partido->goles_vis = -1;
+	partido->local = NULL;
+	partido->visitante = NULL;
+	partido->goles_local = -1;
+	partido->goles_visitante = -1;
 	partido->jugado = false;
 	return partido;
 }
 
-bool partido_agregar_local(partido_t *partido, char *eq);
+bool partido_agregar_local(partido_t *partido, char *equipo)
 {
-	if(!partido) return false;
-	if(!partido->loc)
-	{
-		partido->loc = eq; //strdup?
+	if (!partido) return false;
+	if (!partido->local) {
+		partido->local = equipo; //strdup?
 		return true;
 	}
 	return false;
 }
 
-bool partido_agregar_visitante(partido_t *partido, char *eq);
+bool partido_agregar_visitante(partido_t *partido, char *equipo)
 {
-	if(!partido) return false;
-	if(!partido->vis)
-	{
-		partido->loc = eq; //strdup?
+	if (!partido) return false;
+	if (!partido->visitante) {
+		partido->visitante = equipo; //strdup?
 		return true;
 	}
 	return false;
 }
 
-bool partido_simular(partido_t *partido, int gloc, int gvis)
+bool partido_simular(partido_t *partido, int goles_local, int goles_visita)
 {
-	if(partido->jugado) return false;
-	partido->goles_loc = gloc;
-	partido->goles_vis = gvis;
+	if (partido->jugado) return false;
+	partido->goles_local = goles_local;
+	partido->goles_visitante = goles_visita;
 	partido->jugado = true;
 	return true;
 }
@@ -76,20 +83,21 @@ bool partido_realizado(partido_t *partido)
 
 char* partido_ganador(partido_t *partido)
 {
-	if(!partido || !partido->jugado) return NULL;
-	int result = partido->goles_loc - partido->goles_vis;
-	if (result > 0) return partido->loc;
-	return partido->vis;
+	if (!partido || !partido->jugado) return NULL;
+	int resultado = partido->goles_local - partido->goles_visitante;
+	if (resultado > 0)
+		return partido->local;
+	return partido->visitante;
 }
 
-int partido_gloc(partido_t *partido)
+int partido_goles_local(partido_t *partido)
 {
-	return partido->goles_loc;
+	return partido->goles_local;
 }
 
-int partido_gvis(partido_t *partido)
+int partido_goles_visitante(partido_t *partido)
 {
-	return partido->goles_vis;
+	return partido->goles_visitante;
 }
 
 void partido_destruir(partido_t *partido)
