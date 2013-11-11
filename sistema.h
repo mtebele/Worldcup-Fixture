@@ -8,6 +8,7 @@
 #include <string.h>
 #include "equipo.h"
 #include "jugador.h"
+#include "partido.h"
 #include "abb.h"
 #include "hash.h"
 #include "lista.h"

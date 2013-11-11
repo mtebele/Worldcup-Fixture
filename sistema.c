@@ -12,10 +12,10 @@
 
 struct sistema
 {
-	abb_t* fixture;
-	hash_t* jugadores;
-	hash_t* equipos;
-	heap_t* goleadores;
+	partido_t **fixture;
+	hash_t *jugadores;
+	hash_t *equipos;
+	heap_t *goleadores;
 	sistema_comparar_clave_t comparar;
 	sistema_destruir_dato_t destruir_dato;
 };
@@ -39,61 +39,123 @@ char *strdup(const char *s)
     strcpy(n, s);
     return n;
 }
+
+int idrtopos(const char *idr, size_t n)
+{
+	int instancia = idr[0] - '0';
+	if (instancia == 1) return n-1;
+	int inicio_instancia = n - 2* instancia;
+	int letra = idr[1] - 'a';
+	int pos = inicio_instancia + letra;
+	return pos;
+}
  
  /******************************************************************
  *                IMPLEMENTACION DE LAS PRIMITIVAS
  ******************************************************************/
-  
+ 
 // Crea un sistema.
 // Post: devuelve un nuevo sistema vacío.
 sistema_t* sistema_crear(sistema_comparar_clave_t cmp, sistema_destruir_dato_t destruir_dato)
 {
 	sistema_t* sistema = malloc(sizeof(sistema_t));
 	if (sistema == NULL) return NULL;
-	sistema->fixture = abb_crear(cmp, destruir_dato);
-	if (sistema->fixture == NULL) {
-		free(sistema);
-		return NULL;
-	}
 	sistema->jugadores = hash_crear(destruir_dato);
 	if (sistema->jugadores == NULL) {
-		free(sistema->fixture);
 		free(sistema);
 		return NULL;
 	}
 	sistema->equipos = hash_crear(destruir_dato);
 	if (sistema->equipos == NULL) {
-		free(sistema->fixture);
 		free(sistema->jugadores);
 		free(sistema);
 		return NULL;
 	}
 	sistema->goleadores = heap_crear(cmp_max);
 	if (sistema->goleadores == NULL) {
-		free(sistema->fixture);
 		free(sistema->jugadores);
 		free(sistema->equipos);
 		free(sistema);
 		return NULL;
 	}
+	size_t cant_partidos = sistema_cantidad_equipos(sistema) - 1;
+	sistema->fixture = malloc(sizeof(partido_t) * cant_partidos);
+	if (sistema->fixture == NULL) {
+		free(sistema->goleadores);		
+		free(sistema->jugadores);
+		free(sistema->equipos);
+		free(sistema);
+		return NULL;
+	}
+	//falta inicializar el fixture con todos los partidos "vacios"
 	sistema->comparar = cmp;
 	sistema->destruir_dato = destruir_dato;
 	return sistema;
 }
 
+//Determina la cantidad de equipos participantes en el torneo
+//Pre: El sistema fue creado
+//Post: Devuelve la cantidad de equipos particpantes en el torneo
+size_t sistema_cantidad_equipos(sistema_t *sistema)
+{
+	return hash_cantidad(sistema->equipos);
+}
+
 resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[])
 {
-	//char* idr = vec_parametros[0];
+	char* idr = vec_parametros[0];
 	int gloc = atoi(vec_parametros[1]);
 	int gvis = atoi(vec_parametros[2]);
-	for (int i = 0; i < gloc; i++) {
-		// GOLES LOCAL
-	}
-	for (int i = 0; i < gvis; i++) {
-		// GOLES VISITANTE
-	}
+	int pos = idrtopos(idr, sistema_cantidad_equipos(sistema) - 1);
+
+	/*Falta chequear si los partidos previos fueron jugados*/
+	/*Simulo el partido*/
+	partido_t *partido = sistema->fixture[pos];
+	bool simulado = partido_simular(partido, gloc, gvis);
+	if(!simulado) return NONE; //algo, no se si none,
+
+	/*Obtengo los equipos involucrados*/
+	char *nombre_local = partido_local(partido);
+	char *nombre_visitante = partido_visitante(partido);
+
+	equipo_t* local = hash_obtener(sistema->equipos, nombre_local);
+	equipo_t* visitante = hash_obtener(sistema->equipos, nombre_visitante);
 	
-	// TODO
+	/*Actualizo info de jugadores de los equipos involucrados*/
+	int i = 3;
+	while (i < gloc) {
+		int dorsal = vec_parametros[i];
+		equipo_agregar_gol(local, dorsal);
+		i++;
+	}
+
+	while (i < gvis) {
+		int dorsal = vec_parametros[i];
+		equipo_agregar_gol(visitante, dorsal);
+		i++;
+	}
+
+	/*Actualizo los goleadores del torneo*/	
+	heap_heapify(sistema->goleadores);
+
+	/*Clasifico al ganador a la próxima ronda*/
+	if (pos == sistema_cantidad_equipos(sistema))
+		return OK;
+	int posprox = pos;	
+	if (posprox % 2 == 1)
+		posprox--;
+	int offset = sistema_cantidad_equipos(sistema) / 2 - posprox / 2;
+	posprox += offset;
+	
+	char* ganador = partido_ganador(partido);
+	partido_t *prox_ronda = sistema->fixture[posprox];
+	bool clasifico;
+	if(pos % 2 == 0)
+		clasifico = partido_agregar_local(prox_ronda, ganador);
+	else
+		clasifico = partido_agregar_visitante(prox_ronda, ganador);
+	if(clasifico)
+		return OK;
 	return NONE;
 }
 
@@ -169,17 +231,21 @@ char** sistema_goles_jugador(sistema_t* sistema, char* nombre)
 
 char* sistema_mostrar_resultado(sistema_t* sistema, char* idr)
 {
-	partido_t *partido = abb_obtener(sistema->fixture, idr);
+	size_t pos = idrtopos(idr, sistema_cantidad_equipos(sistema->equipos) - 1);
+	partido_t *partido = sistema->fixture[pos];
 	if (!partido) return NULL;
 
 	char linea[BUFSIZ];
-	char *eq_loc = partido_eq_loc(partido);
-	int goles_loc = partido_goles_loc(partido);
-	char *eq_vis = partido_eq_vis(partido);
-	int goles_vis = partido_goles_vis(partido);
-	sprintf(linea, "%s,%d: %s Goles: %d", eq_loc, goles_loc, eq_vis, goles_vis);
+	if(partido_jugado(partido))
+	{
+		char *local = partido_local(partido);
+		int goles_loc = partido_goles_local(partido);
+		char *visita = partido_visitante(partido);
+		int goles_vis = partido_goles_visitante(partido);
+		sprintf(linea, "%s,%d: %s Goles: %d", local, goles_loc, visita, goles_vis);
+	} else sprintf(linea, "Error : el resultado con id %s no existe", idr);
+
 	return linea;
-	return NULL;
 }
 
 bool sistema_agregar_equipo(sistema_t* sistema, char* nombre)

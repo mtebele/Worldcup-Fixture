@@ -9,7 +9,6 @@
 ****************************************************/
 
 struct partido {
-	char *idr;
 	bool jugado;
 	char *local;
 	char *visitante;
@@ -30,15 +29,10 @@ char *strdup(const char *s)
     return n;
 }
 
-partido_t *partido_crear(const char *idr)
+partido_t *partido_crear()
 {
 	partido_t *partido = malloc(sizeof(partido_t));
 	if (!partido) return NULL;
-	partido->idr = strdup(idr);
-	if (!partido->idr) {
-		free(partido);
-		return NULL;
-	}
 	partido->local = NULL;
 	partido->visitante = NULL;
 	partido->goles_local = -1;
@@ -90,6 +84,16 @@ char* partido_ganador(partido_t *partido)
 	return partido->visitante;
 }
 
+char* partido_local(partido_t *partido)
+{
+	return partido->local;
+}
+
+char* partido_visitante(partido_t *partido)
+{
+	return partido->visitante;
+}
+
 int partido_goles_local(partido_t *partido)
 {
 	return partido->goles_local;
@@ -103,6 +107,5 @@ int partido_goles_visitante(partido_t *partido)
 void partido_destruir(partido_t *partido)
 {
 	if (!partido) return;	
-	free(partido->idr);
 	free(partido);
 }

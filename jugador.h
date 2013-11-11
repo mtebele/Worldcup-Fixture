@@ -47,8 +47,8 @@ int jugador_goles(jugador_t *jugador);
 
 // Agrega goles al historial del jugador.
 // Pre: El jugador fue creado, goles es un número mayor a 0.
-// Post: Se suman los goles pasados al historial del jugador.
-void jugador_agregar_goles(jugador_t *jugador, int goles); /*o bool?*/
+// Post: Se suma un gol al historial del jugador.
+void jugador_agregar_gol(jugador_t *jugador);
 
 // Destruye el jugador.
 // Pre: El jugador fue creado.

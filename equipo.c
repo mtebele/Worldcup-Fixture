@@ -57,6 +57,12 @@ char* equipo_nombre(equipo_t *equipo)
 	return equipo->nombre;
 }
 
+void equipo_agregar_gol(equipo_t *equipo, int dorsal)
+{
+	jugador_t *jugador = equipo->plantel[dorsal-1];
+	jugador_agregar_gol(jugador);
+}
+
 void equipo_destruir(equipo_t *equipo)
 {
 	for (int i = 0; i < equipo->cant_jugadores; i++)
