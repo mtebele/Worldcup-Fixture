@@ -95,7 +95,6 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 	char* nombre = vec_parametros[1];
 	
 	equipo_t* equipo = hash_obtener(sistema->equipos, nombre);
-	
 	if (equipo == NULL)	return NULL;
 	
 	lista_t* lista = lista_crear();
@@ -116,7 +115,7 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 	return lista;
 }
 
-char **sistema_listar_goleador(sistema_t* sistema)
+char* sistema_listar_goleador(sistema_t* sistema)
 {
 	char *datos[3];
 	jugador_t *jug = heap_ver_max(sistema->goleadores);
@@ -126,9 +125,17 @@ char **sistema_listar_goleador(sistema_t* sistema)
 	return datos;
 }
 
-resultado_t sistema_goles_jugador(sistema_t* sistema, char* nombre)
+char* sistema_goles_jugador(sistema_t* sistema, char* nombre)
 {
-	return NONE;
+	jugador_t* jugador = hash_obtener(sistema->jugadores, nombre);
+	if (jugador == NULL) return NULL;
+	
+	char linea[BUFSIZ];
+	int dorsal = jugador_dorsal(jugador);
+	char* equipo = jugador_equipo(jugador);
+	int goles = jugador_goles(jugador);
+	sprintf(linea, "%s,%d: %s Goles: %d", nombre, dorsal, equipo, goles);
+	return linea;	
 }
 
 resultado_t sistema_mostrar_resultado(sistema_t* sistema, char* idr)

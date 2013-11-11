@@ -25,6 +25,11 @@ typedef struct jugador jugador_t;
 // El mismo no tiene goles.
 jugador_t *jugador_crear(char* nombre, int dorsal);
 
+// Obtiene el equipo del jugador
+// Pre: El jugador fue creado.
+// Post: Devuelve el equipo del jugador.
+char* jugador_equipo(jugador_t *jugador);
+
 // Obtiene el dorsal del jugador
 // Pre: El jugador fue creado.
 // Post: Devuelve el dorsal del jugador.
