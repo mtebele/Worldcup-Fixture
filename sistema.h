@@ -21,8 +21,6 @@
 
 typedef struct sistema sistema_t;
 typedef enum {OK, EQUIPO_NOINSCRIPTO, NONE} resultado_t;
-
-char *strdup(const char *s);
 		      
 // Determinará el criterio de comparación entre claves.
 // Pre: las cadenas fueron creadas.
@@ -56,6 +54,11 @@ char* sistema_mostrar_resultado(sistema_t* sistema, char* idr);
 bool sistema_agregar_equipo(sistema_t* sistema, char* nombre);
 
 bool sistema_agregar_jugador(sistema_t* sistema, int dorsal, char* equipo, char* nombre);
+
+// Determina la cantidad de equipos participantes en el torneo
+// Pre: El sistema fue creado
+// Post: Devuelve la cantidad de equipos particpantes en el torneo
+size_t sistema_cantidad_equipos(sistema_t *sistema);
 
 void sistema_destruir(sistema_t* sistema);
 
