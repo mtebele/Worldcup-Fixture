@@ -4,6 +4,8 @@
 #include <string.h>
 #include "sistema.h"
 
+#define MAX_JUG 23
+
 /******************************************************************
  *                IMPLEMENTACION DE LOS TIPOS DE DATOS
  ******************************************************************/
@@ -89,25 +91,29 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 // FALTA ORDENAR POR NOMBRE
 lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 {
-	/*char* orden = vec_parametros[0];
+	char* orden = vec_parametros[0];
 	char* nombre = vec_parametros[1];
 	
 	equipo_t* equipo = hash_obtener(sistema->equipos, nombre);
 	
 	if (equipo == NULL)	return NULL;
 	
-	lista_t* lista = lista_crear();	
-	jugador** plantel = equipo->plantel;
+	lista_t* lista = lista_crear();
+	if (lista == NULL) return NULL;
+	
+	jugador_t** plantel = equipo_plantel(equipo);
 	
 	for (int i = 0; i < MAX_JUG; i++) {
+		char* jugador = jugador_nombre(plantel[i]);
+		int dorsal = jugador_dorsal(plantel[i]);
+		int goles = jugador_goles(plantel[i]);
 		
-	}*/
+		char linea[BUFSIZ];
+		sprintf(linea, "%s,%d: Goles: %d", jugador, dorsal, goles);
+		lista_insertar_ultimo(lista, linea);
+	}
 	
-	
-	
-	
-	
-	return NULL;
+	return lista;
 }
 
 char **sistema_listar_goleador(sistema_t* sistema)
