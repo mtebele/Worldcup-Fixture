@@ -55,6 +55,11 @@ char* jugador_nombre(jugador_t *jugador)
 	return jugador->nombre; //strdup?
 }
 
+int jugador_goles(jugador_t *jugador)
+{
+	return jugador->goles;
+}
+
 void jugador_agregar_gol(jugador_t *jugador)
 {
 	jugador->goles++;

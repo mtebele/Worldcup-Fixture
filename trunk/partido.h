@@ -70,6 +70,8 @@ int partido_goles_local(partido_t *partido);
 // Post: Devuelve la cantidad de goles del equipo visitante.
 int partido_goles_visitante(partido_t *partido);
 
+bool partido_jugado(partido_t *partido);
+
 // Destruye el partido.
 // Pre: El partido fue creado.
 // Post: El partido es destruido.

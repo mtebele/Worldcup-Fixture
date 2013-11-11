@@ -79,11 +79,11 @@ sistema_t* sistema_crear(sistema_comparar_clave_t cmp, sistema_destruir_dato_t d
 		return NULL;
 	}
 	size_t cant_partidos = sistema_cantidad_equipos(sistema) - 1;
-	sistema->fixture = malloc(sizeof(partido_t) * cant_partidos);
+	sistema->fixture = malloc(sizeof(partido_t*) * cant_partidos);
 	if (sistema->fixture == NULL) {
-		free(sistema->goleadores);		
 		free(sistema->jugadores);
 		free(sistema->equipos);
+		free(sistema->goleadores);
 		free(sistema);
 		return NULL;
 	}
@@ -93,10 +93,7 @@ sistema_t* sistema_crear(sistema_comparar_clave_t cmp, sistema_destruir_dato_t d
 	return sistema;
 }
 
-//Determina la cantidad de equipos participantes en el torneo
-//Pre: El sistema fue creado
-//Post: Devuelve la cantidad de equipos particpantes en el torneo
-size_t sistema_cantidad_equipos(sistema_t *sistema)
+size_t sistema_cantidad_equipos(sistema_t* sistema)
 {
 	return hash_cantidad(sistema->equipos);
 }
@@ -124,13 +121,13 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 	/*Actualizo info de jugadores de los equipos involucrados*/
 	int i = 3;
 	while (i < gloc) {
-		int dorsal = vec_parametros[i];
+		int dorsal = atoi(vec_parametros[i]);
 		equipo_agregar_gol(local, dorsal);
 		i++;
 	}
 
 	while (i < gvis) {
-		int dorsal = vec_parametros[i];
+		int dorsal = atoi(vec_parametros[i]);
 		equipo_agregar_gol(visitante, dorsal);
 		i++;
 	}
@@ -231,21 +228,22 @@ char** sistema_goles_jugador(sistema_t* sistema, char* nombre)
 
 char* sistema_mostrar_resultado(sistema_t* sistema, char* idr)
 {
-	size_t pos = idrtopos(idr, sistema_cantidad_equipos(sistema->equipos) - 1);
+	size_t pos = idrtopos(idr, sistema_cantidad_equipos(sistema) - 1);
 	partido_t *partido = sistema->fixture[pos];
 	if (!partido) return NULL;
 
 	char linea[BUFSIZ];
-	if(partido_jugado(partido))
-	{
+	if (partido_jugado(partido)) {
 		char *local = partido_local(partido);
 		int goles_loc = partido_goles_local(partido);
 		char *visita = partido_visitante(partido);
 		int goles_vis = partido_goles_visitante(partido);
 		sprintf(linea, "%s,%d: %s Goles: %d", local, goles_loc, visita, goles_vis);
-	} else sprintf(linea, "Error : el resultado con id %s no existe", idr);
+	}
+	else
+		sprintf(linea, "Error : el resultado con id %s no existe", idr);
 
-	return linea;
+	return strdup(linea);
 }
 
 bool sistema_agregar_equipo(sistema_t* sistema, char* nombre)
@@ -270,7 +268,7 @@ bool sistema_agregar_jugador(sistema_t* sistema, int dorsal, char* equipo, char*
 // Post: El sistema es destruido.
 void sistema_destruir(sistema_t* sistema)
 {
-	abb_destruir(sistema->fixture);	
+	//partido_destruir(sistema->fixture);	// COMO BORRAR TODOS LOS PARTIDOS?
 	hash_destruir(sistema->jugadores);	
 	hash_destruir(sistema->equipos);	//destruyo 2 veces??
 	heap_destruir(sistema->goleadores, NULL);	//destruí todo antes!

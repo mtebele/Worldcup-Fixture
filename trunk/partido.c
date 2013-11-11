@@ -104,6 +104,11 @@ int partido_goles_visitante(partido_t *partido)
 	return partido->goles_visitante;
 }
 
+bool partido_jugado(partido_t *partido)
+{
+	return partido->jugado;
+}
+
 void partido_destruir(partido_t *partido)
 {
 	if (!partido) return;	
