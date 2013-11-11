@@ -40,8 +40,8 @@ void mensaje_jugador_no_inscripto(char* jugador) {
     printf("Error: el jugador %s no esta inscipto en el fixture\n", jugador);
 }
 
-void mensaje_listar_jugadores(/*??*/) {
-    return;
+void mensaje_listar_jugadores(char* jugador, int dorsal, int goles) {
+    printf("%s,%d: Goles: %d\n", jugador, dorsal, goles);
 }
 
 void mensaje_listar_goleador(char* jugador, char* equipo, int goles) {
