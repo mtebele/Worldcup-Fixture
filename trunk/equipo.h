@@ -37,6 +37,12 @@ bool equipo_inscribir(equipo_t *equipo, jugador_t *jugador);
 // Post: Devuelve el nombre del equipo.
 char* equipo_nombre(equipo_t *equipo);
 
+// Agrega un gol al jugador de dorsal pasado por parámetro
+// Pre: El equipo fue creado.
+// Post: Añade un gol al jugador de dorsal "dorsal" en el
+// equipo
+void equipo_agregar_gol(equipo_t *equipo, int dorsal);
+
 // Destruye el equipo.
 // Pre: El equipo fue creado.
 // Post: El equipo es destruido.

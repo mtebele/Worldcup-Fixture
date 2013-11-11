@@ -55,9 +55,9 @@ char* jugador_nombre(jugador_t *jugador)
 	return jugador->nombre; //strdup?
 }
 
-void jugador_agregar_goles(jugador_t *jugador, int goles)
+void jugador_agregar_gol(jugador_t *jugador)
 {
-	jugador->goles += goles;
+	jugador->goles++;
 }
 
 void jugador_destruir(jugador_t *jugador)

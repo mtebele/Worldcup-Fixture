@@ -21,8 +21,8 @@ typedef struct partido partido_t;
 ******************************************************/
 
 // Crea un partido nuevo.
-// Post: devuelve un partido con clave idr
-partido_t *partido_crear(const char *idr);
+// Post: devuelve un partido.
+partido_t *partido_crear();
 
 // Agrega equipo local al partido.
 // Pre: El partido fue creado.
@@ -50,15 +50,25 @@ bool partido_realizado(partido_t *partido);
 // Post: devuelve el nombre del equipo ganador
 char* partido_ganador(partido_t *partido);
 
+// Obtiene el local del partido
+// Pre: el partido fue creado
+// Post: devuelve el nombre del equipo local
+char* partido_local(partido_t *partido);
+
+// Obtiene el visitante del partido
+// Pre: el partido fue creado
+// Post: devuelve el nombre del equipo visitante
+char* partido_visitante(partido_t *partido);
+
 // Obtiene los goles del local
 // Pre: El partido fue creado.
 // Post: Devuelve la cantidad de goles del equipo local.
-int partido_gloc(partido_t *partido);
+int partido_goles_local(partido_t *partido);
 
 // Obtiene los goles del visitante.
 // Pre: El partido fue creado.
 // Post: Devuelve la cantidad de goles del equipo visitante.
-int partido_gvis(partido_t *partido);
+int partido_goles_visitante(partido_t *partido);
 
 // Destruye el partido.
 // Pre: El partido fue creado.
