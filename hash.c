@@ -46,15 +46,6 @@ size_t fhash(const char* clave, size_t tam)
  	return h % tam;
 }
 
-// Clono una cadena con memoria dinámica
-char *strdup(const char *s)
-{
-    char *n = malloc(strlen(s) + 1);
-    if(n == NULL) return NULL;
-    strcpy(n, s);
-    return n;
-}
-
 // Crea un nodo
 nodo_hash_t* nodo_hash_crear(const char *clave, void *dato)
 {

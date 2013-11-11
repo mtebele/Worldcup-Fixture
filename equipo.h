@@ -17,6 +17,9 @@ tará asociada al dorsal de cada jugador */
 
 typedef struct equipo equipo_t;
 
+// Clona una cadena con memoria dinámica
+char *strdup(const char *s);
+
 /******************************************************
                 PRIMITIVAS DE JUGADOR
 ******************************************************/

@@ -14,15 +14,6 @@
 		DEFINICION DE FUNCIONES
 ****************************************/
 
-// Clona una cadena con memoria dinámica.
-char *strdup(const char *s)
-{
-    char *n = malloc(strlen(s) + 1);
-    if (n == NULL) return NULL;
-    strcpy(n, s); 
-    return n;
-}
-
 // Transforma el texto a mayúsculas
 void upcase(char* str)
 {
