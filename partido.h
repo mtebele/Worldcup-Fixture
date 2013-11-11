@@ -63,6 +63,6 @@ int partido_gvis(partido_t *partido);
 // Destruye el partido.
 // Pre: El partido fue creado.
 // Post: El partido es destruido.
-void partido_destruir(jugador_t *jugador);
+void partido_destruir(partido_t *partido);
 
 #endif // PARTIDO_H

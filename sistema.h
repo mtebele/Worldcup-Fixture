@@ -20,6 +20,8 @@
 
 typedef struct sistema sistema_t;
 typedef enum {OK, EQUIPO_NOINSCRIPTO, NONE} resultado_t;
+
+char *strdup(const char *s);
 		      
 // Determinará el criterio de comparación entre claves.
 // Pre: las cadenas fueron creadas.
@@ -48,7 +50,7 @@ char** sistema_listar_goleador(sistema_t* sistema);
 
 char** sistema_goles_jugador(sistema_t* sistema, char* nombre);
 
-resultado_t sistema_mostrar_resultado(sistema_t* sistema, char* idr);
+char* sistema_mostrar_resultado(sistema_t* sistema, char* idr);
 
 bool sistema_agregar_equipo(sistema_t* sistema, char* nombre);
 
