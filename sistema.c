@@ -140,9 +140,18 @@ char* sistema_goles_jugador(sistema_t* sistema, char* nombre)
 	return linea;	
 }
 
-resultado_t sistema_mostrar_resultado(sistema_t* sistema, char* idr)
+char* sistema_mostrar_resultado(sistema_t* sistema, char* idr)
 {
-	return NONE;
+	partido_t *partido = abb_obtener(sistema_fixture, idr);
+	if (!partido) return NULL;
+
+	char linea[BUFSIZ];
+	char *eq_loc = partido_eq_loc(partido);
+	int goles_loc = partido_goles_loc(partido);
+	char *eq_vis = partido_eq_vis(partido);
+	int goles_vis = partido_goles_vis(partido);
+	sprintf(linea, "%s,%d: %s Goles: %d", eq_loc, goles_loc, eq_vis, goles_vis);
+	return linea;
 }
 
 // Destruye el sistema.
