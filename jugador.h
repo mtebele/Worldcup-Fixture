@@ -35,6 +35,11 @@ int jugador_dorsal(jugador_t *jugador);
 // Post: Devuelve el nombre del jugador.
 char* jugador_nombre(jugador_t *jugador);
 
+// Obtiene los goles del jugador
+// Pre: El jugador fue creado.
+// Post: Devuelve los goles del jugador.
+int jugador_goles(jugador_t *jugador);
+
 // Agrega goles al historial del jugador.
 // Pre: El jugador fue creado, goles es un número mayor a 0.
 // Post: Se suman los goles pasados al historial del jugador.

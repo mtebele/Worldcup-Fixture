@@ -7,10 +7,12 @@
 #include <stdio.h>
 #include <string.h>
 #include "equipo.h"
+#include "jugador.h"
 #include "abb.h"
 #include "hash.h"
 #include "lista.h"
 #include "heap.h"
+#include "lista.h"
 
 /******************************************************************
  *                DEFINICION DE LOS TIPOS DE DATOS
