@@ -115,10 +115,12 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 	return lista;
 }
 
-char* sistema_listar_goleador(sistema_t* sistema)
+char** sistema_listar_goleador(sistema_t* sistema)
 {
-	char *datos[3];
 	jugador_t *jug = heap_ver_max(sistema->goleadores);
+	if (!jug) return NULL;
+
+	char *datos[3];
 	datos[0] = jugador_nombre(jug);
 	datos[1] = jugador_equipo(jug);
 	datos[2] = jugador_dorsal(jug);
@@ -143,12 +145,14 @@ resultado_t sistema_mostrar_resultado(sistema_t* sistema, char* idr)
 	return NONE;
 }
 
-// Destruye la sesión. Si se recibe la función destruir_dato por parámetro,
-// para cada uno de los elementos de la sesión llama a destruir_dato.
-// Pre: el sistema fue creado. destruir_dato es una función capaz de destruir
-// los datos de la sesión, o NULL en caso de que no se la utilice.
-// Post: se destruye la sesión y sus datos.
+// Destruye el sistema.
+// Pre: El sistema fue creado.
+// Post: El sistema es destruido.
 void sistema_destruir(sistema_t* sistema)
 {
+	abb_destruir(sistema->fixture);	
+	hash_destruir(sistema->jugadores);	
+	hash_destruir(sistema->equipos);	//destruyo 2 veces??
+	heap_destruir(sistema->goleadores, NULL);	//destruí todo antes!
 	return;
 }
