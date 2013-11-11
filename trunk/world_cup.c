@@ -63,7 +63,7 @@ void sistema_iniciar()
 			}
 		}
 		else if (comparar(comando, "LISTAR_GOLEADOR")) {
-			char** datos = sistema_listar_goleador(sistema);
+			char** datos = sistema_listar_goleador(sistema);l
 			mensaje_listar_goleador(datos[0], datos[1], atoi(datos[2]));
 		}
 		else if (comparar(comando, "GOLES_JUGADOR")) {

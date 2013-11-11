@@ -97,7 +97,7 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 	return NONE;
 }
 
-// FALTA ORDENAR POR NOMBRE: ARBOL!
+// OPTIMIZAR ESTO
 lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 {
 	char* orden = vec_parametros[0];
@@ -111,13 +111,33 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 	
 	jugador_t** plantel = equipo_plantel(equipo);
 	
-	for (int i = 0; i < MAX_JUG; i++) {
-		jugador_t* jugador = plantel[i];
-		char* datos[3];
-		datos[0] = jugador_nombre(jugador);
-		sprintf(datos[1], "%d", jugador_dorsal(jugador));
-		sprintf(datos[2], "%d", jugador_goles(jugador));
-		lista_insertar_ultimo(lista, datos);
+	if (sistema->comparar(orden, "dorsal") == 0) {
+		for (int i = 0; i < MAX_JUG; i++) {
+			jugador_t* jugador = plantel[i];
+			char* datos[3];
+			datos[0] = jugador_nombre(jugador);
+			sprintf(datos[1], "%d", jugador_dorsal(jugador));
+			sprintf(datos[2], "%d", jugador_goles(jugador));
+			lista_insertar_ultimo(lista, datos);
+		}
+	}
+	else {
+		abb_t* abb_jugadores = abb_crear(sistema->comparar, sistema->destruir_dato);
+		for (int i = 0; i < MAX_JUG; i++) {
+			jugador_t* jugador = plantel[i];
+			char* nombre = jugador_nombre(jugador);			
+			abb_guardar(abb_jugadores, nombre, jugador);
+		}
+		abb_iter_t* abb_iter = abb_iter_in_crear(abb_jugadores);
+		while (!abb_iter_in_al_final(abb_iter)) {
+			// abb_obtener o usar el hash?
+			jugador_t* jugador = hash_obtener(sistema->jugadores, nombre);
+			char* datos[3];
+			datos[0] = jugador_nombre(jugador);
+			sprintf(datos[1], "%d", jugador_dorsal(jugador));
+			sprintf(datos[2], "%d", jugador_goles(jugador));
+			lista_insertar_ultimo(lista, datos);
+		}
 	}
 	
 	return lista;
@@ -142,7 +162,7 @@ char** sistema_goles_jugador(sistema_t* sistema, char* nombre)
 	
 	char *datos[3];
 	sprintf(datos[0], "%d", jugador_dorsal(jugador));
-	datos[1] =jugador_equipo(jugador);
+	datos[1] = jugador_equipo(jugador);
 	sprintf(datos[2], "%d", jugador_goles(jugador));
 	return datos;
 }
