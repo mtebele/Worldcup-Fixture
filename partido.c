@@ -14,7 +14,6 @@ struct partido {
 	char *vis;
 	int goles_loc;
 	int goles_vis;
-
 };
 
 /***************************************************
