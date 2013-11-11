@@ -97,7 +97,7 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 	return NONE;
 }
 
-// FALTA ORDENAR POR NOMBRE
+// FALTA ORDENAR POR NOMBRE: ARBOL!
 lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 {
 	char* orden = vec_parametros[0];
@@ -112,13 +112,12 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 	jugador_t** plantel = equipo_plantel(equipo);
 	
 	for (int i = 0; i < MAX_JUG; i++) {
-		char* jugador = jugador_nombre(plantel[i]);
-		int dorsal = jugador_dorsal(plantel[i]);
-		int goles = jugador_goles(plantel[i]);
-		
-		char linea[BUFSIZ];
-		sprintf(linea, "%s,%d: Goles: %d", jugador, dorsal, goles);
-		lista_insertar_ultimo(lista, linea);
+		jugador_t* jugador = plantel[i];
+		char* datos[3];
+		datos[0] = jugador_nombre(jugador);
+		sprintf(datos[1], "%d", jugador_dorsal(jugador));
+		sprintf(datos[2], "%d", jugador_goles(jugador));
+		lista_insertar_ultimo(lista, datos);
 	}
 	
 	return lista;
@@ -133,26 +132,24 @@ char** sistema_listar_goleador(sistema_t* sistema)
 	datos[0] = jugador_nombre(jugador);
 	datos[1] = jugador_equipo(jugador);
 	sprintf(datos[2], "%d", jugador_dorsal(jugador));
-	//datos[2] = jugador_dorsal(jugador);
 	return datos;
 }
 
-char* sistema_goles_jugador(sistema_t* sistema, char* nombre)
+char** sistema_goles_jugador(sistema_t* sistema, char* nombre)
 {
 	jugador_t* jugador = hash_obtener(sistema->jugadores, nombre);
 	if (jugador == NULL) return NULL;
 	
-	char linea[BUFSIZ];
-	int dorsal = jugador_dorsal(jugador);
-	char* equipo = jugador_equipo(jugador);
-	int goles = jugador_goles(jugador);
-	sprintf(linea, "%s,%d: %s Goles: %d", nombre, dorsal, equipo, goles);
-	return strdup(linea); //strdup?
+	char *datos[3];
+	sprintf(datos[0], "%d", jugador_dorsal(jugador));
+	datos[1] =jugador_equipo(jugador);
+	sprintf(datos[2], "%d", jugador_goles(jugador));
+	return datos;
 }
 
 char* sistema_mostrar_resultado(sistema_t* sistema, char* idr)
 {
-	partido_t *partido = abb_obtener(sistema_fixture, idr);
+	partido_t *partido = abb_obtener(sistema->fixture, idr);
 	if (!partido) return NULL;
 
 	char linea[BUFSIZ];

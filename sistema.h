@@ -46,7 +46,7 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[]);
 
 char** sistema_listar_goleador(sistema_t* sistema);
 
-char* sistema_goles_jugador(sistema_t* sistema, char* nombre);
+char** sistema_goles_jugador(sistema_t* sistema, char* nombre);
 
 resultado_t sistema_mostrar_resultado(sistema_t* sistema, char* idr);
 
