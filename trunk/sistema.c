@@ -181,6 +181,23 @@ char* sistema_mostrar_resultado(sistema_t* sistema, char* idr)
 	return linea;
 }
 
+bool sistema_agregar_equipo(sistema_t* sistema, char* nombre)
+{
+	equipo_t* equipo = equipo_crear(nombre);
+	if (!equipo) return NULL;
+	
+	//GUARDAR EN FIXTURE
+	return hash_guardar(sistema->equipos, nombre, equipo);	
+}
+
+bool sistema_agregar_jugador(sistema_t* sistema, int dorsal, char* equipo, char* nombre)
+{
+	jugador_t* jugador = jugador_crear(nombre, equipo, dorsal);
+	if (!jugador) return NULL;
+	
+	return hash_guardar(sistema->jugadores, nombre, jugador);	
+}
+
 // Destruye el sistema.
 // Pre: El sistema fue creado.
 // Post: El sistema es destruido.

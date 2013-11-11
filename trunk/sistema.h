@@ -50,6 +50,10 @@ char** sistema_goles_jugador(sistema_t* sistema, char* nombre);
 
 resultado_t sistema_mostrar_resultado(sistema_t* sistema, char* idr);
 
+bool sistema_agregar_equipo(sistema_t* sistema, char* nombre);
+
+bool sistema_agregar_jugador(sistema_t* sistema, int dorsal, char* equipo, char* nombre);
+
 void sistema_destruir(sistema_t* sistema);
 
 #endif // SISTEMA_H

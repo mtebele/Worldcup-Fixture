@@ -31,10 +31,8 @@ void upcase(char* str)
 		str[i] = toupper(str[i]);
 }
 
-void sistema_iniciar()
+void sistema_iniciar(sistema_t* sistema)
 {	
-	// Creo el sistema
-	sistema_t* sistema = sistema_crear();
 	char instruccion[BUFSIZ];
 	
 	while (fgets(instruccion, BUFSIZ, stdin)) {	
@@ -63,7 +61,7 @@ void sistema_iniciar()
 			}
 		}
 		else if (comparar(comando, "LISTAR_GOLEADOR")) {
-			char** datos = sistema_listar_goleador(sistema);l
+			char** datos = sistema_listar_goleador(sistema);
 			mensaje_listar_goleador(datos[0], datos[1], atoi(datos[2]));
 		}
 		else if (comparar(comando, "GOLES_JUGADOR")) {
@@ -84,8 +82,11 @@ void sistema_iniciar()
 /* Programa principal. */ 
 int main(int argc, char *argv[])
 {
+	// Creo el sistema
+	sistema_t* sistema = sistema_crear();
 	FILE *archivo;
 	char linea[BUFSIZ];
+	char* equipo;
  	
 	if (argc > 1) {
 		archivo = fopen(argv[1], "r");
@@ -98,18 +99,26 @@ int main(int argc, char *argv[])
 			while (feof(archivo) == 0) {
 				int dorsal = i % 24;
 				if (fgets(linea, BUFSIZ, archivo)) {
-					if (dorsal == 0)
+					if (dorsal == 0) {
+						// Equipo
 						printf("%s",linea);
-					else
+						equipo = strdup(linea);
+						sistema_agregar_equipo(sistema, equipo);
+					}
+					else {
+						// Jugador
 						printf("%i %s", dorsal, linea);
+						sistema_agregar_jugador(sistema, dorsal, equipo, linea);
+					}
 				}
-				i++;
+				i++; //TODO: RESETEAR A 0
 			}
 		}
+		free(equipo);
 		fclose(archivo);
 	}
 	
-	sistema_iniciar();
+	sistema_iniciar(sistema);
 	
 	return 0;
 }
