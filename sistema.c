@@ -4,8 +4,6 @@
 #include <string.h>
 #include "sistema.h"
 
-#define MAX_JUG 23
-
 /******************************************************************
  *                IMPLEMENTACION DE LOS TIPOS DE DATOS
  ******************************************************************/
@@ -71,33 +69,35 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 
 lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 {
-	char* orden = vec_parametros[0];
+	/*char* orden = vec_parametros[0];
 	char* nombre = vec_parametros[1];
 	
 	equipo_t* equipo = hash_obtener(sistema->equipos, nombre);
+	
 	if (equipo == NULL)	return NULL;
 	
-	lista_t* lista = lista_crear();
-	if (lista == NULL) return NULL;
-	
-	jugador_t** plantel = equipo_plantel(equipo);
+	lista_t* lista = lista_crear();	
+	jugador** plantel = equipo->plantel;
 	
 	for (int i = 0; i < MAX_JUG; i++) {
-		char* jugador = jugador_nombre(plantel[i]);
-		int dorsal = jugador_dorsal(plantel[i]);
-		int goles = jugador_goles(plantel[i]);
 		
-		char linea[BUFSIZ];
-		sprintf(linea, "%s,%d: Goles: %d", jugador, dorsal, goles);
-		lista_insertar_ultimo(lista, linea);
-	}
+	}*/
 	
-	return lista;
+	
+	
+	
+	
+	return NULL;
 }
 
-resultado_t sistema_listar_goleador(sistema_t* sistema)
+char **sistema_listar_goleador(sistema_t* sistema)
 {
-	return NONE;
+	char *datos[3];
+	jugador_t *jug = heap_ver_max(sistema->goleadores);
+	datos[0] = jugador_nombre(jug);
+	datos[1] = jugador_equipo(jug);
+	datos[2] = jugador_dorsal(jug);
+	return datos;
 }
 
 resultado_t sistema_goles_jugador(sistema_t* sistema, char* nombre)
