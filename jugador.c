@@ -19,7 +19,7 @@ struct jugador {
 		IMPLEMENTACION PRIMITIVAS DE JUGADOR
 ****************************************************/
 
-jugador_t *jugador_crear(char *nombre, char *equipo int dorsal)
+jugador_t *jugador_crear(char *nombre, char *equipo, int dorsal)
 {
 	jugador_t *jugador = malloc(sizeof(jugador_t));
 	if (!jugador) return NULL;
