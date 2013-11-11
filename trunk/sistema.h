@@ -21,6 +21,9 @@
 
 typedef struct sistema sistema_t;
 typedef enum {OK, EQUIPO_NOINSCRIPTO, NONE} resultado_t;
+
+// Clona una cadena con memoria dinámica
+char *strdup(const char *s);
 		      
 // Determinará el criterio de comparación entre claves.
 // Pre: las cadenas fueron creadas.

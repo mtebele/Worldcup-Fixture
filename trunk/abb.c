@@ -39,15 +39,6 @@ struct abb_iter
  *                		FUNCIONES AUXILIARES
  ******************************************************************/
 
-// Clona una cadena con memoria dinámica.
-char *strdup(const char *s)
-{
-    char *n = malloc(strlen(s) + 1);
-    if (n == NULL) return NULL;
-    strcpy(n, s);
-    return n;
-}
-
 // Devuelve el mínimo nodo (el más izquierdo) y setea al parámetro
 // 'padre' recibido con el padre del mínimo encontrado.
 nodo_abb_t *abb_obtener_minimo(nodo_abb_t *raiz, nodo_abb_t **padre)

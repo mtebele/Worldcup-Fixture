@@ -16,6 +16,9 @@
 
 typedef struct jugador jugador_t;
 
+// Clona una cadena con memoria dinámica
+char *strdup(const char *s);
+
 /******************************************************
                 PRIMITIVAS DE JUGADOR
 ******************************************************/

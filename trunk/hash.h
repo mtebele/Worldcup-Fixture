@@ -20,6 +20,9 @@ typedef struct hash_iter hash_iter_t;
 //agregados a la tabla                                           
 typedef void (*hash_destruir_dato_t)(void *);
 
+// Clona una cadena con memoria dinámica
+char *strdup(const char *s);
+
 /********************** DECLARACIÓN DE PRIMITIVAS **********************/
 
 //Crea una tabla de hash.
