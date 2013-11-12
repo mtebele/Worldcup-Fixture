@@ -160,19 +160,20 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 	if (strcmp(orden, "dorsal") == 0) {
 		for (int i = 0; i < MAX_JUG; i++) {
 			jugador_t* jugador = plantel[i];
-			puts("vale");
+			char buf_dorsal[10];
+			char buf_goles[10];
 			char* datos[3];
 			datos[0] = jugador_nombre(jugador);
-			puts("vale2");
-			sprintf(datos[1], "%d", jugador_dorsal(jugador));
-			puts("vale3");
-			sprintf(datos[2], "%d", jugador_goles(jugador));
-			puts("vale4");
+			snprintf(buf_dorsal, 10, "%d", jugador_dorsal(jugador));
+			datos[1] = strdup(buf_dorsal);
+			snprintf(buf_goles, 10, "%d", jugador_goles(jugador));
+			datos[2] = strdup(buf_goles);
 			
 			printf("Nombre: %s | Dorsal: %s | Goles: %s\n", datos[0], datos[1], datos[2]);
 			
 			lista_insertar_ultimo(lista, datos);
 		}
+		puts("termina for");
 	}
 	else {
 		abb_t* abb_jugadores = abb_crear(sistema->comparar, sistema->destruir_dato);
@@ -250,7 +251,11 @@ bool sistema_agregar_equipo(sistema_t* sistema, char* nombre)
 bool sistema_agregar_jugador(sistema_t* sistema, int dorsal, char* equipo, char* nombre)
 {
 	jugador_t* jugador = jugador_crear(nombre, equipo, dorsal);
-	if (!jugador) return false;	
+	if (!jugador) return false;
+	
+	equipo_t* equipo_jug = hash_obtener(sistema->equipos, equipo);
+	if (!equipo_inscribir(equipo_jug, jugador)) return false;
+	
 	return hash_guardar(sistema->jugadores, nombre, jugador);	
 }
 

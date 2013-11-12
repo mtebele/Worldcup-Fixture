@@ -24,7 +24,7 @@ void mensaje_equipo_ya_inscripto(char* equipo);
 
 void mensaje_equipo_no_inscripto(char* equipo);
 
-void mensaje_listar_jugadores(/*??*/);
+void mensaje_listar_jugadores(char* jugador, int dorsal, int goles);
 
 void mensaje_listar_goleador(char* jug, char* equipo, int goles);
 

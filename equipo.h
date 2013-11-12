@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "jugador.h"
+#include "lista.h"
 
 /*****************************************************
           DEFINICION DE LOS TIPOS DE DATOS
