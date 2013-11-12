@@ -54,17 +54,17 @@ void equipo_agregar_gol(equipo_t *equipo, int dorsal)
 	jugador_agregar_gol(jugador);
 }
 
-void equipo_destruir(equipo_t *equipo)
-{
-	for (int i = 0; i < equipo->cant_jugadores; i++)
-		jugador_destruir(equipo->plantel[i]);
-
-	free(equipo->plantel);
-	free(equipo->nombre);
-	free(equipo);
-}
-
 jugador_t** equipo_plantel(equipo_t *equipo)
 {
 	return equipo->plantel;
 }
+
+void equipo_destruir(void *equipo)
+{
+	equipo_t *team = (equipo_t*)equipo;
+	free(team->plantel);
+	free(team->nombre);
+	free(team);
+}
+
+

@@ -50,7 +50,7 @@ void equipo_agregar_gol(equipo_t *equipo, int dorsal);
 // Destruye el equipo.
 // Pre: El equipo fue creado.
 // Post: El equipo es destruido.
-void equipo_destruir(equipo_t *equipo);
+void equipo_destruir(void *equipo);
 
 jugador_t** equipo_plantel(equipo_t *equipo);
 

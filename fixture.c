@@ -17,11 +17,21 @@ struct fixture {
 /***************************************************
 		IMPLEMENTACION PRIMITIVAS DE JUGADOR
 ****************************************************/
+bool isnum(char c)
+{
+	return (c >= '0' && c <= '9');
+}
 
 int idrtopos(const char *idr, size_t n)
 {
 	printf("hago idrtopos para %s\n", idr);
 	int instancia = idr[0] - '0';
+	int i = 1;
+	while( isnum(idr[i]) )
+	{
+		instancia = 10 * instancia + idr[i] - '0';
+		i++;
+	}	
 	if (instancia == 1) return n-1;
 	int inicio_instancia = n + 1 - 2*instancia;
 	int letra = idr[1] - 'a';
@@ -81,7 +91,9 @@ bool fixture_cargar(fixture_t* fixture, lista_t* lista)
 partido_t* fixture_partido(fixture_t *fixture, char* idr, size_t cantidad)
 {
 	int pos = idrtopos(idr, cantidad - 1);
-	return fixture->partidos[pos];
+	if (pos >= 0 && pos < cantidad)
+		return fixture->partidos[pos];
+	return NULL;
 }
 
 //devuelve el partido siguiente que le toca jugar
@@ -117,6 +129,9 @@ size_t fixture_tamanio(fixture_t *fixture)
 
 void fixture_destruir(fixture_t *fixture)
 {
-	if (!fixture) return;	
+	if (!fixture) return;
+	for(int i=0; i < fixture->tamanio; i++)
+		partido_destruir(fixture->partidos[i]);
+	free(fixture->partidos);	
 	free(fixture);
 }
