@@ -39,7 +39,7 @@ bool equipo_inscribir(equipo_t *equipo, jugador_t *jugador)
 	int cant_jugadores = equipo->cant_jugadores;
 	if (!equipo || cant_jugadores == MAX_JUG)
 		return false;
-	equipo->plantel[cant_jugadores] = jugador;
+	equipo->plantel[equipo->cant_jugadores++] = jugador;
 	return true;
 }
 

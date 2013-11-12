@@ -64,10 +64,13 @@ void sistema_iniciar(sistema_t* sistema, lista_t* lista_equipos)
 			vec_parametros[0] = strtok(cadena, " ");
 			vec_parametros[1] = strtok(NULL, " ");
 			lista_t* lista = sistema_listar_jugadores(sistema, vec_parametros);
+						
 			while (!lista_esta_vacia(lista)) {
 				char** datos = lista_borrar_primero(lista);
-				mensaje_listar_jugadores(datos[0], datos[1], datos[2]);
+				printf("%s,%s: Goles: %s\n", datos[0], datos[1], datos[2]);
+				//mensaje_listar_jugadores(datos[0], atoi(datos[1]), atoi(datos[2])); //TOFIX
 			}
+			lista_destruir(lista, free);
 		}
 		else if (comparar(comando, "LISTAR_GOLEADOR")) {
 			char** datos = sistema_listar_goleador(sistema);
