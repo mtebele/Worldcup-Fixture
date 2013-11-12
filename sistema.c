@@ -98,7 +98,7 @@ printf("%s vs %s\n", partido_local(partido), partido_visitante(partido));
 	bool simulado = partido_simular(partido, goles_local, goles_visitante);
 	if (!simulado) return NONE; //algo, no se si none,
 
-puts("sigue1");
+printf("SIMULA\n");
 
 	/*Obtengo los equipos involucrados*/
 	char *nombre_local = partido_local(partido);
@@ -107,7 +107,7 @@ puts("sigue1");
 	equipo_t* local = hash_obtener(sistema->equipos, nombre_local);
 	equipo_t* visitante = hash_obtener(sistema->equipos, nombre_visitante);
 	
-puts("sigue2");
+printf("OBTIENE EQUIPOS\n");
 	
 	/*Actualizo info de jugadores de los equipos involucrados*/
 	int i = 3;
@@ -138,7 +138,7 @@ puts("sigue2");
 		clasifico = partido_agregar_local(partido_siguiente, ganador);
 	else
 		clasifico = partido_agregar_visitante(partido_siguiente, ganador);
-		
+	if(clasifico) printf("Hecho, %s está clasificado\n",ganador);	
 	if (clasifico)
 		return OK;
 	return NONE;
@@ -261,7 +261,7 @@ bool sistema_agregar_jugador(sistema_t* sistema, int dorsal, char* equipo, char*
 
 bool sistema_cargar_fixture(sistema_t* sistema, lista_t* lista)
 {
-	sistema->fixture = fixture_crear(lista_largo(lista)); //-1?
+	sistema->fixture = fixture_crear(lista_largo(lista)-1);
 	if (!sistema->fixture) return false;	
 	return fixture_cargar(sistema->fixture, lista);
 }
