@@ -44,12 +44,11 @@ void sistema_iniciar(sistema_t* sistema, lista_t* lista_equipos)
 	
 	while (fgets(instruccion, BUFSIZ, stdin)) {	
 		char* vec_parametros[MAX_PARAMETROS];
-		char* cadena = strtok(instruccion, " \n");
-		char* comando = strdup(cadena);
-		vec_parametros[0] = trim(comando);
-		int cantidad = 1;
+		char* cadena = strtok(instruccion, " ,");
+		char* comando = strdup(trim(cadena));
+		int cantidad = 0;
 		
-		while (((cadena = strtok(NULL, ",\n")) != NULL) && cantidad <= MAX_PARAMETROS) {
+		while (((cadena = strtok(NULL, ",\n")) != NULL)) {// && cantidad <= MAX_PARAMETROS) {
 			vec_parametros[cantidad] = strdup(trim(cadena));
 			cantidad++;
 		}
@@ -61,6 +60,7 @@ void sistema_iniciar(sistema_t* sistema, lista_t* lista_equipos)
 			sistema_agregar_resultado(sistema, vec_parametros);
 		}
 		else if (comparar(comando, "LISTAR_JUGADORES")) {
+			vec_parametros[1] = strtok(vec_parametros[0], " ");
 			lista_t* lista = sistema_listar_jugadores(sistema, vec_parametros);
 			while (!lista_esta_vacia(lista)) {
 				char** datos = lista_borrar_primero(lista);

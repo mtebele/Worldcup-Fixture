@@ -85,12 +85,20 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 	int goles_local = atoi(vec_parametros[1]);
 	int goles_visitante = atoi(vec_parametros[2]);
 	size_t cantidad = sistema_cantidad_equipos(sistema);
+	
+printf("cantidad: %d\n", cantidad);
+printf("idr: %s | local : %d | visitante : %d\n", idr, goles_local, goles_visitante);
 
 	/*Falta chequear si los partidos previos fueron jugados*/
 	/*Simulo el partido*/
 	partido_t *partido = fixture_partido(sistema->fixture, idr, cantidad);
+	
+printf("%s vs %s\n", partido_local(partido), partido_visitante(partido));
+
 	bool simulado = partido_simular(partido, goles_local, goles_visitante);
 	if (!simulado) return NONE; //algo, no se si none,
+
+puts("sigue1");
 
 	/*Obtengo los equipos involucrados*/
 	char *nombre_local = partido_local(partido);
@@ -98,6 +106,8 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 
 	equipo_t* local = hash_obtener(sistema->equipos, nombre_local);
 	equipo_t* visitante = hash_obtener(sistema->equipos, nombre_visitante);
+	
+puts("sigue2");
 	
 	/*Actualizo info de jugadores de los equipos involucrados*/
 	int i = 3;
@@ -140,8 +150,12 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 	char* orden = vec_parametros[0];
 	char* nombre = vec_parametros[1];
 	
+printf("orden: %s | nombre : %s\n", orden, nombre);
+	
 	equipo_t* equipo = hash_obtener(sistema->equipos, nombre);
 	if (equipo == NULL)	return NULL;
+
+printf("equipo: %s\n", equipo_nombre(equipo));
 	
 	lista_t* lista = lista_crear();
 	if (lista == NULL) return NULL;
@@ -228,17 +242,13 @@ bool sistema_agregar_equipo(sistema_t* sistema, char* nombre)
 {
 	equipo_t* equipo = equipo_crear(nombre);
 	if (!equipo) return false;
-	
-	//TODO: GUARDAR EN FIXTURE	
-	hash_guardar(sistema->equipos, nombre, equipo);
-	return true;
+	return hash_guardar(sistema->equipos, nombre, equipo);
 }
 
 bool sistema_agregar_jugador(sistema_t* sistema, int dorsal, char* equipo, char* nombre)
 {
 	jugador_t* jugador = jugador_crear(nombre, equipo, dorsal);
-	if (!jugador) return false;
-	
+	if (!jugador) return false;	
 	return hash_guardar(sistema->jugadores, nombre, jugador);	
 }
 
