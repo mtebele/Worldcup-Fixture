@@ -16,6 +16,9 @@
 
 typedef struct partido partido_t;
 
+// Clona una cadena con memoria dinámica
+char *strdup(const char *s);
+
 /******************************************************
                 PRIMITIVAS DE JUGADOR
 ******************************************************/
@@ -38,12 +41,6 @@ bool partido_agregar_visitante(partido_t *partido, char *eq);
 // Pre: El partido fue creado
 // Post: Marca el partido como realizado y actualiza la información del mismo.
 bool partido_simular(partido_t *partido, int gloc, int gvis);
-
-// Determina si un partido se jugó o no.
-// Pre: el partido fue creado.
-// Post: devuelve true si el partido se jugó, false en
-// caso contrario.
-bool partido_realizado(partido_t *partido); 
 
 // Obtiene el ganador del partido
 // Pre: el partido fue creado
@@ -70,6 +67,10 @@ int partido_goles_local(partido_t *partido);
 // Post: Devuelve la cantidad de goles del equipo visitante.
 int partido_goles_visitante(partido_t *partido);
 
+// Determina si un partido se jugó o no.
+// Pre: el partido fue creado.
+// Post: devuelve true si el partido se jugó, false en
+// caso contrario.
 bool partido_jugado(partido_t *partido);
 
 // Destruye el partido.

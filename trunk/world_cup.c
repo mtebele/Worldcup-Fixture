@@ -60,7 +60,9 @@ void sistema_iniciar(sistema_t* sistema, lista_t* lista_equipos)
 			sistema_agregar_resultado(sistema, vec_parametros);
 		}
 		else if (comparar(comando, "LISTAR_JUGADORES")) {
-			vec_parametros[1] = strtok(vec_parametros[0], " ");
+			char* cadena = vec_parametros[0];
+			vec_parametros[0] = strtok(cadena, " ");
+			vec_parametros[1] = strtok(NULL, " ");
 			lista_t* lista = sistema_listar_jugadores(sistema, vec_parametros);
 			while (!lista_esta_vacia(lista)) {
 				char** datos = lista_borrar_primero(lista);
@@ -113,16 +115,16 @@ int main(int argc, char *argv[])
 				if (fgets(trim(linea), BUFSIZ, archivo)) {
 					if (dorsal == 0) {
 						// Equipo
-						equipo = strdup(linea);
+						equipo = strdup(trim(linea));
 						//printf("Pais: %s\n", equipo);
-						sistema_agregar_equipo(sistema, equipo);
+						if (!sistema_agregar_equipo(sistema, equipo)) puts("ERROR GUARDAR EQUIPO");
 						lista_insertar_ultimo(lista_equipos, equipo);
 					}
 					else {
 						// Jugador
-						char* jugador = trim(linea);
+						char* jugador = strdup(trim(linea));
 						//printf("%i %s\n", dorsal, jugador);
-						sistema_agregar_jugador(sistema, dorsal, equipo, jugador);
+						if (!sistema_agregar_jugador(sistema, dorsal, equipo, jugador))  puts("ERROR GUARDAR JUGADOR");
 					}
 				}
 				i++;

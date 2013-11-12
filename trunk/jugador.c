@@ -33,7 +33,7 @@ jugador_t *jugador_crear(char *nombre, char *equipo, int dorsal)
 
 char* jugador_equipo(jugador_t *jugador)
 {
-	return jugador->equipo; //strdup?
+	return strdup(jugador->equipo);
 }
 
 int jugador_dorsal(jugador_t *jugador)
@@ -43,7 +43,7 @@ int jugador_dorsal(jugador_t *jugador)
 
 char* jugador_nombre(jugador_t *jugador)
 {
-	return jugador->nombre; //strdup?
+	return strdup(jugador->nombre);
 }
 
 int jugador_goles(jugador_t *jugador)

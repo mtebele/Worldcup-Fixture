@@ -149,26 +149,28 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 {
 	char* orden = vec_parametros[0];
 	char* nombre = vec_parametros[1];
-	
-printf("orden: %s | nombre : %s\n", orden, nombre);
-	
+		
 	equipo_t* equipo = hash_obtener(sistema->equipos, nombre);
-	if (equipo == NULL)	return NULL;
-
-printf("equipo: %s\n", equipo_nombre(equipo));
+	if (!equipo) return NULL;
 	
 	lista_t* lista = lista_crear();
 	if (lista == NULL) return NULL;
-	
+
 	jugador_t** plantel = equipo_plantel(equipo);
-	
-	if (sistema->comparar(orden, "dorsal") == 0) {
+	if (strcmp(orden, "dorsal") == 0) {
 		for (int i = 0; i < MAX_JUG; i++) {
 			jugador_t* jugador = plantel[i];
+			puts("vale");
 			char* datos[3];
 			datos[0] = jugador_nombre(jugador);
+			puts("vale2");
 			sprintf(datos[1], "%d", jugador_dorsal(jugador));
+			puts("vale3");
 			sprintf(datos[2], "%d", jugador_goles(jugador));
+			puts("vale4");
+			
+			printf("Nombre: %s | Dorsal: %s | Goles: %s\n", datos[0], datos[1], datos[2]);
+			
 			lista_insertar_ultimo(lista, datos);
 		}
 	}

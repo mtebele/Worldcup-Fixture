@@ -45,7 +45,7 @@ bool equipo_inscribir(equipo_t *equipo, jugador_t *jugador)
 
 char* equipo_nombre(equipo_t *equipo)
 {
-	return equipo->nombre;
+	return strdup(equipo->nombre);
 }
 
 void equipo_agregar_gol(equipo_t *equipo, int dorsal)

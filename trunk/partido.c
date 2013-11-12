@@ -63,28 +63,23 @@ bool partido_simular(partido_t *partido, int goles_local, int goles_visita)
 	return true;
 }
 
-bool partido_realizado(partido_t *partido)
-{
-	return partido->jugado;
-}
-
 char* partido_ganador(partido_t *partido)
 {
 	if (!partido || !partido->jugado) return NULL;
 	int resultado = partido->goles_local - partido->goles_visitante;
 	if (resultado > 0)
-		return partido->local;
-	return partido->visitante;
+		return partido_local(partido);
+	return partido_visitante(partido);
 }
 
 char* partido_local(partido_t *partido)
 {
-	return partido->local;
+	return strdup(partido->local);
 }
 
 char* partido_visitante(partido_t *partido)
 {
-	return partido->visitante;
+	return strdup(partido->visitante);
 }
 
 int partido_goles_local(partido_t *partido)
