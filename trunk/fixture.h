@@ -30,4 +30,8 @@ bool fixture_final(fixture_t *fixture, char* idr, size_t cantidad);
 
 void fixture_destruir(fixture_t *fixture);
 
+size_t fixture_cantidad(fixture_t *fixture);
+
+size_t fixture_tamanio(fixture_t *fixture);
+
 #endif // FIXTURE_H

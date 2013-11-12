@@ -11,6 +11,7 @@
 struct fixture {
 	partido_t** partidos;
 	size_t cantidad;
+	size_t tamanio;
 };
 
 /***************************************************
@@ -19,6 +20,7 @@ struct fixture {
 
 int idrtopos(const char *idr, size_t n)
 {
+	printf("hago idrtopos para %s\n", idr);
 	int instancia = idr[0] - '0';
 	if (instancia == 1) return n-1;
 	int inicio_instancia = n + 1 - 2*instancia;
@@ -38,26 +40,41 @@ fixture_t *fixture_crear(size_t cantidad)
 		return NULL;
 	}
 	fixture->cantidad = 0;
+	fixture->tamanio = cantidad;
 	return fixture;
 }
 
 bool fixture_cargar(fixture_t* fixture, lista_t* lista)
 {
 	lista_iter_t* iter = lista_iter_crear(lista);
+	int i = 0;
 	partido_t* partido;
 	while (!lista_iter_al_final(iter)) {
-		if (fixture->cantidad % 2 == 0) {
+		if (i % 2 == 0) {
 			partido = partido_crear();
 			if (!partido) return false;
 			partido_agregar_local(partido, lista_iter_ver_actual(iter));
 		}
-		else
+		else{
 			partido_agregar_visitante(partido, lista_iter_ver_actual(iter));
-		
-		fixture->cantidad++;
+			fixture->partidos[fixture->cantidad] = partido;
+			fixture->cantidad++;
+		}
+		i++;
 		lista_iter_avanzar(iter);
 	}
+	
 	lista_iter_destruir(iter);
+
+	i = fixture_cantidad(fixture);
+	/*creo el resto de los partidos*/
+	while(i < fixture_tamanio(fixture))
+	{
+		partido = partido_crear();
+		fixture->partidos[i] = partido;
+		i++;
+	}
+
 	return true;
 }
 
@@ -70,11 +87,13 @@ partido_t* fixture_partido(fixture_t *fixture, char* idr, size_t cantidad)
 //devuelve el partido siguiente que le toca jugar
 partido_t* fixture_clasificar_equipo(fixture_t *fixture, char* idr, size_t cantidad)
 {
+	printf("INICIO CLASIFICAR EQUIPO\n");	
 	int pos = idrtopos(idr, cantidad - 1);
 	if (pos % 2 == 1)
 		pos--;
 	int offset = (cantidad - pos) / 2;
 	pos += offset;	
+	printf("la posición del próximo partido es %i\n",pos);	
 	return fixture->partidos[pos];
 }
 
@@ -84,6 +103,16 @@ bool fixture_final(fixture_t *fixture, char* idr, size_t cantidad)
 	if (pos == cantidad)
 		return true;
 	return false;
+}
+
+size_t fixture_cantidad(fixture_t *fixture)
+{
+	return fixture->cantidad;
+}
+
+size_t fixture_tamanio(fixture_t *fixture)
+{
+	return fixture->tamanio;
 }
 
 void fixture_destruir(fixture_t *fixture)
