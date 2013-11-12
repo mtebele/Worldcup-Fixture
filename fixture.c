@@ -19,11 +19,15 @@ struct fixture {
 
 int idrtopos(const char *idr, size_t n)
 {
+printf("idr: %s | cantidad: %d\n", idr, n);
 	int instancia = idr[0] - '0';
+printf("instancia: %d\n", instancia);
 	if (instancia == 1) return n-1;
-	int inicio_instancia = n - 2* instancia;
+	int inicio_instancia = n + 1 - 2*instancia;
+printf("inicio_instancia: %d\n", inicio_instancia);
 	int letra = idr[1] - 'a';
 	int pos = inicio_instancia + letra;
+printf("pos: %d\n", pos);
 	return pos;
 }
 
@@ -63,6 +67,7 @@ bool fixture_cargar(fixture_t* fixture, lista_t* lista)
 partido_t* fixture_partido(fixture_t *fixture, char* idr, size_t cantidad)
 {
 	int pos = idrtopos(idr, cantidad - 1);
+printf("pos: %d\n", pos);
 	return fixture->partidos[pos];
 }
 
