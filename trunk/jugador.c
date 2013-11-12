@@ -56,10 +56,11 @@ void jugador_agregar_gol(jugador_t *jugador)
 	jugador->goles++;
 }
 
-void jugador_destruir(jugador_t *jugador)
+void jugador_destruir(void *jugador)
 {
-	if (!jugador) return;	
-	free(jugador->nombre);
-	free(jugador->equipo);
-	free(jugador);
+	if (!jugador) return;
+	jugador_t *player = (jugador_t*)jugador; 	
+	free(player->nombre);
+	free(player->equipo);
+	free(player);
 }

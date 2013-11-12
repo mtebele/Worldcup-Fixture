@@ -7,7 +7,7 @@
 #include "sistema.h"
 
 #define CANT_COMANDOS 12
-#define MAX_PARAMETROS 5
+#define MAX_PARAMETROS 500
 #define comparar(a,b) strcmp(a,b)==0
 
 /****************************************
@@ -37,7 +37,7 @@ char* trim(char* str)
 	return start;
 }
 
-void sistema_iniciar(sistema_t* sistema, lista_t* lista_equipos)
+void wc_iniciar(sistema_t* sistema, lista_t* lista_equipos)
 {
 	sistema_cargar_fixture(sistema, lista_equipos);
 	char instruccion[BUFSIZ];
@@ -57,7 +57,9 @@ void sistema_iniciar(sistema_t* sistema, lista_t* lista_equipos)
 		
 		// Compara el comando y ejecuta la acción correspondiente
 		if (comparar(comando, "AGREGAR_RESULTADO")) {
-			sistema_agregar_resultado(sistema, vec_parametros);
+			resultado_t res = sistema_agregar_resultado(sistema, vec_parametros);
+			if(res == OK) printf("OK\n");
+			if(res == NONE) printf("ERROR.\n");
 		}
 		else if (comparar(comando, "LISTAR_JUGADORES")) {
 			char* cadena = vec_parametros[0];
@@ -88,56 +90,71 @@ void sistema_iniciar(sistema_t* sistema, lista_t* lista_equipos)
 		
 		for (int i = 0; i < cantidad; i++)
 			free(vec_parametros[i]);	
+	
+		free(comando);	
 	}	
+	
+	lista_destruir(lista_equipos,NULL);
+	sistema_destruir(sistema);
+}
+
+void wc_cargar_archivo(sistema_t *sistema, char *nombrearch, lista_t *lista_equipos)
+{
+	
+	FILE *archivo;
+	char linea[BUFSIZ];
+	char* equipo;
+
+	archivo = fopen(nombrearch, "r");
+
+	if (!archivo)
+		puts("Error de apertura del archivo.");
+	else {
+ 		//puts("El contenido del archivo de prueba es:");
+ 		int i = 0;
+		while (feof(archivo) == 0) {
+			int dorsal = i % 24;
+			if (fgets(linea, BUFSIZ, archivo)) {
+				trim(linea);
+				if (dorsal == 0) {
+					// Equipo
+					equipo = strdup(trim(linea));
+					//printf("Pais: %s\n", equipo);
+					if (!sistema_agregar_equipo(sistema, equipo)) puts("ERROR GUARDAR EQUIPO");
+					lista_insertar_ultimo(lista_equipos, equipo);
+				}
+				else {
+					// Jugador
+					char* jugador = strdup(trim(linea));
+					//printf("%i %s\n", dorsal, jugador);
+					if (!sistema_agregar_jugador(sistema, dorsal, equipo, jugador))  puts("ERROR GUARDAR JUGADOR");
+					free(jugador);
+				}
+			}
+			i++;
+//			if(i % 24 == 0 && i != 0) free(equipo);
+		}
+	}
+//	free(equipo);
+	fclose(archivo);
 }
 
 /* Programa principal. */ 
 int main(int argc, char *argv[])
 {
 	// Creo el sistema
-	sistema_t* sistema = sistema_crear(strcmp, free);
+	sistema_t* sistema = sistema_crear(strcmp);
 	if (!sistema) puts("NULL");
 
 	lista_t* lista_equipos = lista_crear();
 	if (!lista_equipos) puts("LISTA NULL");
-	
-	FILE *archivo;
-	char linea[BUFSIZ];
-	char* equipo;
+
  	
 	if (argc > 1) {
-		archivo = fopen(argv[1], "r");
- 
-		if (!archivo)
-			puts("Error de apertura del archivo.");
-		else {
-	 		//puts("El contenido del archivo de prueba es:");
-	 		int i = 0;
-			while (feof(archivo) == 0) {
-				int dorsal = i % 24;
-				if (fgets(trim(linea), BUFSIZ, archivo)) {
-					if (dorsal == 0) {
-						// Equipo
-						equipo = strdup(trim(linea));
-						//printf("Pais: %s\n", equipo);
-						if (!sistema_agregar_equipo(sistema, equipo)) puts("ERROR GUARDAR EQUIPO");
-						lista_insertar_ultimo(lista_equipos, equipo);
-					}
-					else {
-						// Jugador
-						char* jugador = strdup(trim(linea));
-						//printf("%i %s\n", dorsal, jugador);
-						if (!sistema_agregar_jugador(sistema, dorsal, equipo, jugador))  puts("ERROR GUARDAR JUGADOR");
-					}
-				}
-				i++;
-			}
-		}
-		free(equipo);
-		fclose(archivo);
+		wc_cargar_archivo(sistema, argv[1], lista_equipos);
 	}
 	
-	sistema_iniciar(sistema, lista_equipos);
+	wc_iniciar(sistema, lista_equipos);
 	
 	return 0;
 }

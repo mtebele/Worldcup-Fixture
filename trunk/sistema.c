@@ -17,7 +17,6 @@ struct sistema
 	hash_t *equipos;
 	heap_t *goleadores;
 	sistema_comparar_clave_t comparar;
-	sistema_destruir_dato_t destruir_dato;
 };
 
 /******************************************************************
@@ -46,16 +45,16 @@ char *strdup(const char *s)
  
 // Crea un sistema.
 // Post: devuelve un nuevo sistema vacío.
-sistema_t* sistema_crear(sistema_comparar_clave_t cmp, sistema_destruir_dato_t destruir_dato)
+sistema_t* sistema_crear(sistema_comparar_clave_t cmp)
 {
 	sistema_t* sistema = malloc(sizeof(sistema_t));
 	if (sistema == NULL) return NULL;
-	sistema->jugadores = hash_crear(destruir_dato);
+	sistema->jugadores = hash_crear(jugador_destruir);
 	if (!sistema->jugadores) {
 		free(sistema);
 		return NULL;
 	}
-	sistema->equipos = hash_crear(destruir_dato);
+	sistema->equipos = hash_crear(equipo_destruir);
 	if (!sistema->equipos) {
 		free(sistema->jugadores);
 		free(sistema);
@@ -70,7 +69,6 @@ sistema_t* sistema_crear(sistema_comparar_clave_t cmp, sistema_destruir_dato_t d
 	}
 	sistema->fixture = NULL;
 	sistema->comparar = cmp;
-	sistema->destruir_dato = destruir_dato;
 	return sistema;
 }
 
@@ -92,17 +90,18 @@ printf("idr: %s | local : %d | visitante : %d\n", idr, goles_local, goles_visita
 	/*Falta chequear si los partidos previos fueron jugados*/
 	/*Simulo el partido*/
 	partido_t *partido = fixture_partido(sistema->fixture, idr, cantidad);
-	
-printf("%s vs %s\n", partido_local(partido), partido_visitante(partido));
-
-	bool simulado = partido_simular(partido, goles_local, goles_visitante);
-	if (!simulado) return NONE; //algo, no se si none,
-
-printf("SIMULA\n");
 
 	/*Obtengo los equipos involucrados*/
 	char *nombre_local = partido_local(partido);
 	char *nombre_visitante = partido_visitante(partido);
+printf("%s vs %s\n", nombre_local, nombre_visitante);
+
+	bool simulado = partido_simular(partido, goles_local, goles_visitante);
+	if (!simulado)
+		return NONE; //algo, no se si none,
+
+
+printf("SIMULA\n");
 
 	equipo_t* local = hash_obtener(sistema->equipos, nombre_local);
 	equipo_t* visitante = hash_obtener(sistema->equipos, nombre_visitante);
@@ -129,6 +128,7 @@ printf("OBTIENE EQUIPOS\n");
 	/*Clasifico al ganador a la próxima ronda*/
 	if (fixture_final(sistema->fixture, idr, cantidad))
 		return OK;
+
 	
 	char* ganador = partido_ganador(partido);
 	partido_t* partido_siguiente = fixture_clasificar_equipo(sistema->fixture, idr, cantidad);
@@ -141,6 +141,8 @@ printf("OBTIENE EQUIPOS\n");
 	if(clasifico) printf("Hecho, %s está clasificado\n",ganador);	
 	if (clasifico)
 		return OK;
+
+
 	return NONE;
 }
 
@@ -176,7 +178,7 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 		puts("termina for");
 	}
 	else {
-		abb_t* abb_jugadores = abb_crear(sistema->comparar, sistema->destruir_dato);
+		abb_t* abb_jugadores = abb_crear(sistema->comparar, jugador_destruir);
 		for (int i = 0; i < MAX_JUG; i++) {
 			jugador_t* jugador = plantel[i];
 			char* nombre = jugador_nombre(jugador);			
@@ -234,6 +236,8 @@ char* sistema_mostrar_resultado(sistema_t* sistema, char* idr)
 		char *visita = partido_visitante(partido);
 		int goles_vis = partido_goles_visitante(partido);
 		sprintf(linea, "%s,%d: %s Goles: %d", local, goles_loc, visita, goles_vis);
+		free(local);
+		free(visita);
 	}
 	else
 		sprintf(linea, "Error : el resultado con id %s no existe", idr);
@@ -271,9 +275,10 @@ bool sistema_cargar_fixture(sistema_t* sistema, lista_t* lista)
 // Post: El sistema es destruido.
 void sistema_destruir(sistema_t* sistema)
 {
-	//partido_destruir(sistema->fixture);	// COMO BORRAR TODOS LOS PARTIDOS?
+	fixture_destruir(sistema->fixture);	// COMO BORRAR TODOS LOS PARTIDOS?
 	hash_destruir(sistema->jugadores);	
 	hash_destruir(sistema->equipos);	//destruyo 2 veces??
 	heap_destruir(sistema->goleadores, NULL);	//destruí todo antes!
+	free(sistema);
 	return;
 }

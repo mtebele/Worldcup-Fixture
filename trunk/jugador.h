@@ -56,6 +56,6 @@ void jugador_agregar_gol(jugador_t *jugador);
 // Destruye el jugador.
 // Pre: El jugador fue creado.
 // Post: El jugador es destruido.
-void jugador_destruir(jugador_t *jugador);
+void jugador_destruir(void *jugador);
 
 #endif // JUGADOR_H

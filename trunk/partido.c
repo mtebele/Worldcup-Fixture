@@ -36,7 +36,7 @@ bool partido_agregar_local(partido_t *partido, char *equipo)
 {
 	if (!partido) return false;
 	if (!partido->local) {
-		partido->local = equipo; //strdup?
+		partido->local = strdup(equipo); //strdup?
 		return true;
 	}
 	return false;
@@ -46,7 +46,7 @@ bool partido_agregar_visitante(partido_t *partido, char *equipo)
 {
 	if (!partido) return false;
 	if (!partido->visitante) {
-		partido->visitante = equipo; //strdup?
+		partido->visitante = strdup(equipo); //strdup?
 		return true;
 	}
 	return false;
@@ -55,6 +55,7 @@ bool partido_agregar_visitante(partido_t *partido, char *equipo)
 bool partido_simular(partido_t *partido, int goles_local, int goles_visita)
 {
 	puts("simula");
+	if(!partido) return false;
 	if (partido->jugado) return false;
 	partido->goles_local = goles_local;
 	partido->goles_visitante = goles_visita;
@@ -74,31 +75,40 @@ char* partido_ganador(partido_t *partido)
 
 char* partido_local(partido_t *partido)
 {
-	return strdup(partido->local);
+	if(!partido) return NULL;	
+	return partido->local;
 }
 
 char* partido_visitante(partido_t *partido)
 {
-	return strdup(partido->visitante);
+	if(!partido) return NULL;	
+	return partido->visitante;
 }
 
 int partido_goles_local(partido_t *partido)
 {
+	if(!partido) return -1;
 	return partido->goles_local;
 }
 
 int partido_goles_visitante(partido_t *partido)
 {
+	if(!partido) return -1;
 	return partido->goles_visitante;
 }
 
 bool partido_jugado(partido_t *partido)
 {
+	if(!partido) return false;
 	return partido->jugado;
 }
 
 void partido_destruir(partido_t *partido)
 {
-	if (!partido) return;	
+	if (!partido) return;
+	if (partido->local)
+		free(partido->local);
+	if (partido->visitante)
+		free(partido->visitante);
 	free(partido);
 }
