@@ -128,7 +128,6 @@ bool hash_guardar(hash_t *hash, const char *clave, void *dato)
 	// Si estoy usando mas de 3/4, redimensiono al doble.
 	if (hash->cantidad >= hash->tamanio * 3/4)
 		if (!hash_redimensionar(hash, hash->tamanio * 2)) return false;
-
 	size_t pos = hash_obtener_posicion(hash, clave);
 	if (hash_pertenece(hash, clave)) {
 		if (hash->destruir_dato != NULL) 

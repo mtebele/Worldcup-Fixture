@@ -22,19 +22,35 @@ void upcase(char* str)
 		str[i] = toupper(str[i]);
 }
 
-void sistema_iniciar(sistema_t* sistema)
-{	
+// Elimina los espacios de adelante y atrás de un texto
+char* trim(char* str)
+{
+	char* start = str;
+	while (*start && isspace(*start))
+		++start;
+	char* i = start;
+	char* end = start;
+	while (*i)
+		if(!isspace(*(i++)))
+			end = i;
+	*end = 0;
+	return start;
+}
+
+void sistema_iniciar(sistema_t* sistema, lista_t* lista_equipos)
+{
+	sistema_cargar_fixture(sistema, lista_equipos);
 	char instruccion[BUFSIZ];
 	
 	while (fgets(instruccion, BUFSIZ, stdin)) {	
 		char* vec_parametros[MAX_PARAMETROS];
 		char* cadena = strtok(instruccion, " \n");
 		char* comando = strdup(cadena);
-		vec_parametros[0] = comando;
+		vec_parametros[0] = trim(comando);
 		int cantidad = 1;
 		
 		while (((cadena = strtok(NULL, ",\n")) != NULL) && cantidad <= MAX_PARAMETROS) {
-			vec_parametros[cantidad] = strdup(cadena);
+			vec_parametros[cantidad] = strdup(trim(cadena));
 			cantidad++;
 		}
 		
@@ -74,7 +90,12 @@ void sistema_iniciar(sistema_t* sistema)
 int main(int argc, char *argv[])
 {
 	// Creo el sistema
-	sistema_t* sistema = sistema_crear();
+	sistema_t* sistema = sistema_crear(strcmp, free);
+	if (!sistema) puts("NULL");
+
+	lista_t* lista_equipos = lista_crear();
+	if (!lista_equipos) puts("LISTA NULL");
+	
 	FILE *archivo;
 	char linea[BUFSIZ];
 	char* equipo;
@@ -83,33 +104,35 @@ int main(int argc, char *argv[])
 		archivo = fopen(argv[1], "r");
  
 		if (!archivo)
-			printf("\nError de apertura del archivo. \n\n");
+			puts("Error de apertura del archivo.");
 		else {
-	 		printf("\nEl contenido del archivo de prueba es \n\n");
+	 		//puts("El contenido del archivo de prueba es:");
 	 		int i = 0;
 			while (feof(archivo) == 0) {
 				int dorsal = i % 24;
-				if (fgets(linea, BUFSIZ, archivo)) {
+				if (fgets(trim(linea), BUFSIZ, archivo)) {
 					if (dorsal == 0) {
 						// Equipo
-						printf("%s",linea);
 						equipo = strdup(linea);
+						//printf("Pais: %s\n", equipo);
 						sistema_agregar_equipo(sistema, equipo);
+						lista_insertar_ultimo(lista_equipos, equipo);
 					}
 					else {
 						// Jugador
-						printf("%i %s", dorsal, linea);
-						sistema_agregar_jugador(sistema, dorsal, equipo, linea);
+						char* jugador = trim(linea);
+						//printf("%i %s\n", dorsal, jugador);
+						sistema_agregar_jugador(sistema, dorsal, equipo, jugador);
 					}
 				}
-				i++; //TODO: RESETEAR A 0
+				i++;
 			}
 		}
 		free(equipo);
 		fclose(archivo);
 	}
 	
-	sistema_iniciar(sistema);
+	sistema_iniciar(sistema, lista_equipos);
 	
 	return 0;
 }

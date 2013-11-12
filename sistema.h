@@ -6,14 +6,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "equipo.h"
-#include "jugador.h"
-#include "partido.h"
 #include "abb.h"
 #include "hash.h"
 #include "lista.h"
 #include "heap.h"
 #include "lista.h"
+#include "equipo.h"
+#include "jugador.h"
+#include "partido.h"
+#include "fixture.h"
 
 /******************************************************************
  *                DEFINICION DE LOS TIPOS DE DATOS
@@ -62,6 +63,8 @@ bool sistema_agregar_jugador(sistema_t* sistema, int dorsal, char* equipo, char*
 // Pre: El sistema fue creado
 // Post: Devuelve la cantidad de equipos particpantes en el torneo
 size_t sistema_cantidad_equipos(sistema_t *sistema);
+
+bool sistema_cargar_fixture(sistema_t* sistema, lista_t* lista);
 
 void sistema_destruir(sistema_t* sistema);
 
