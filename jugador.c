@@ -53,6 +53,7 @@ int jugador_goles(jugador_t *jugador)
 
 void jugador_agregar_gol(jugador_t *jugador)
 {
+	printf("GOLAZO DE: %s\n", jugador_nombre(jugador));
 	jugador->goles++;
 }
 
