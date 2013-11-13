@@ -122,9 +122,6 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 	int goles_local = atoi(vec_parametros[1]);
 	int goles_visitante = atoi(vec_parametros[2]);
 	size_t cantidad = sistema_cantidad_equipos(sistema);
-	
-printf("cantidad: %d\n", cantidad);
-printf("idr: %s | local : %d | visitante : %d\n", idr, goles_local, goles_visitante);
 
 	/*Falta chequear si los partidos previos fueron jugados*/
 	/*Simulo el partido*/
@@ -133,18 +130,15 @@ printf("idr: %s | local : %d | visitante : %d\n", idr, goles_local, goles_visita
 	/*Obtengo los equipos involucrados*/
 	char *nombre_local = partido_local(partido);
 	char *nombre_visitante = partido_visitante(partido);
+
 printf("%s vs %s\n", nombre_local, nombre_visitante);
 
 	bool simulado = partido_simular(partido, goles_local, goles_visitante);
 	if (!simulado)
 		return NONE; //algo, no se si none,
 
-printf("SIMULA\n");
-
 	equipo_t* local = hash_obtener(sistema->equipos, nombre_local);
 	equipo_t* visitante = hash_obtener(sistema->equipos, nombre_visitante);
-	
-printf("OBTIENE EQUIPOS\n");
 	
 	/*Actualizo info de jugadores de los equipos involucrados*/
 	int i = 0;
@@ -165,16 +159,8 @@ printf("OBTIENE EQUIPOS\n");
 		i++;
 	}
 
-puts("ACTUALIZA GOLES");
-
 	/*Actualizo los goleadores del torneo*/	
 	heap_heapify(sistema->goleadores);
-	
-puts("HEAPIFY OK");
-
-printf("HEAP CANTIDAD: %d\n", heap_cantidad(sistema->goleadores));
-printf("HEAP MAX NOMBRE: %s\n", jugador_nombre(heap_ver_max(sistema->goleadores)));
-printf("HEAP MAX GOLES: %d\n", jugador_goles(heap_ver_max(sistema->goleadores)));
 
 	/*Clasifico al ganador a la próxima ronda*/
 	if (fixture_final(sistema->fixture, idr, cantidad))
@@ -188,10 +174,9 @@ printf("HEAP MAX GOLES: %d\n", jugador_goles(heap_ver_max(sistema->goleadores)))
 		clasifico = partido_agregar_local(partido_siguiente, ganador);
 	else
 		clasifico = partido_agregar_visitante(partido_siguiente, ganador);
-	if(clasifico) printf("Hecho, %s está clasificado\n",ganador);	
+
 	if (clasifico)
 		return OK;
-
 
 	return NONE;
 }
@@ -223,7 +208,6 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, char* nombre)
 			
 			lista_insertar_ultimo(lista, datos);
 		}
-		puts("termina for");
 	}
 	else if (strcmp(modo, "nombre") == 0) {
 		abb_t* abb_jugadores = abb_crear(sistema->comparar, jugador_destruir);
@@ -250,15 +234,15 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, char* nombre)
 
 char** sistema_listar_goleador(sistema_t* sistema)
 {
-	puts("entra1");
 	jugador_t *jugador = heap_ver_max(sistema->goleadores);
-	puts("entra2");
 	if (!jugador) return NULL;
-	puts("entra3");
+	
+	char buf_goles[2];
 	char** datos = malloc(3 * sizeof(char*));
 	datos[0] = jugador_nombre(jugador);
 	datos[1] = jugador_equipo(jugador);
-	sprintf(datos[2], "%d", jugador_dorsal(jugador));
+	itoa(buf_goles, 10, jugador_goles(jugador));
+	datos[2] = strdup(buf_goles);
 	return datos;
 }
 
@@ -307,29 +291,21 @@ bool sistema_agregar_jugador(sistema_t* sistema, int dorsal, char* equipo, char*
 {
 	// Crea el jugador
 	jugador_t* jugador = jugador_crear(nombre, equipo, dorsal);
-	if (!jugador) {
-		puts("JUGADOR ERROR");
+	if (!jugador)
 		return false;
-	}
 	
 	// Agrega el jugador al hash (jugadores)
-	if (!hash_guardar(sistema->jugadores, nombre, jugador)){
-		puts("HASH ERROR");
+	if (!hash_guardar(sistema->jugadores, nombre, jugador))
 		return false;
-	}
 	
 	// Agrega el jugador al heap (goleadores)
-	if (!heap_encolar(sistema->goleadores, jugador)) {
-		puts("HEAP ERROR");
+	if (!heap_encolar(sistema->goleadores, jugador))
 		return false;
-	}
 	
 	// Inscribe el jugador al equipo
 	equipo_t* equipo_jug = hash_obtener(sistema->equipos, equipo);
-	if (!equipo_inscribir(equipo_jug, jugador)){
-		puts("EQUIPO ERROR");
+	if (!equipo_inscribir(equipo_jug, jugador))
 		return false;
-	}
 
 	return true;
 }

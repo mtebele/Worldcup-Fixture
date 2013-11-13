@@ -50,7 +50,7 @@ void upheap(heap_t *heap)
 
 void downheap(void **datos, size_t inicio, size_t fin, cmp_func_t cmp)
 {
-	size_t aux = inicio;	
+	size_t aux = inicio;
 	size_t hijoIzq = aux*2 + 1;
 	size_t hijoDer = aux*2 + 2;
 	int comparar;
@@ -83,7 +83,7 @@ void heapify(void **datos, size_t cant, cmp_func_t cmp)
 {
 	size_t mitad = cant / 2;
 	for (int i = mitad; i >= 0; i--)
-		downheap(datos, i, cant, cmp);
+		downheap(datos, i, cant-1, cmp);
 }
 
 /******************************************************************
