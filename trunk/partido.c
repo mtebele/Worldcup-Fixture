@@ -16,8 +16,9 @@ struct partido {
 	int goles_visitante;
 };
 
+
 /***************************************************
-		IMPLEMENTACION PRIMITIVAS DE JUGADOR
+		IMPLEMENTACION PRIMITIVAS DE PARTIDO
 ****************************************************/
 
 partido_t *partido_crear()
@@ -48,14 +49,23 @@ bool partido_agregar_visitante(partido_t *partido, char *equipo)
 	if (!partido->visitante) {
 		partido->visitante = strdup(equipo); //strdup?
 		return true;
-	}
+	} else
 	return false;
+}
+
+bool partido_hay_clasificados(partido_t *partido)
+{
+	if(!partido) return false;
+	bool hay_local = (partido->local != NULL);
+	bool hay_visita = (partido->visitante != NULL);
+	return hay_local && hay_visita;
 }
 
 bool partido_simular(partido_t *partido, int goles_local, int goles_visita)
 {
 	if(!partido) return false;
-	if (partido->jugado) return false;
+	if (partido->jugado)
+		return false;
 	partido->goles_local = goles_local;
 	partido->goles_visitante = goles_visita;
 	partido->jugado = true;

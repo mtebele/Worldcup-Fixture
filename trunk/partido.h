@@ -37,6 +37,11 @@ bool partido_agregar_local(partido_t *partido, char *eq);
 // Post: Devuelve true si agrega el equipo, false en caso contrario
 bool partido_agregar_visitante(partido_t *partido, char *eq);
 
+// Determina si el partido tiene a sus dos equipos.
+// Pre: El partido fue creado.
+// Post: Devuelve true si existe local y visitante, false en caso contrario.
+bool partido_hay_clasificados(partido_t *partido);
+
 // Simula el resultado de un partido
 // Pre: El partido fue creado
 // Post: Marca el partido como realizado y actualiza la información del mismo.

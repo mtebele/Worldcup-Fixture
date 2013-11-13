@@ -76,8 +76,15 @@ void wc_ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, 
 		char** datos = sistema_goles_jugador(sistema, jugador);
 		mensaje_goles_jugador(jugador, atoi(datos[0]), datos[1], atoi(datos[2]));
 	}
-	else if (comparar(comando, "MOSTRAR_RESULTADO"))
-		sistema_mostrar_resultado(sistema, parametros[0]);
+	else if (comparar(comando, "MOSTRAR_RESULTADO")){
+			char *linea = sistema_mostrar_resultado(sistema, parametros[0]);
+			if(!linea) {
+				printf("ERROR. Id Inexistente\n");
+				return;
+			}
+			printf("%s\n",linea);
+			free(linea);
+		}
 	else if (!comparar(comando, ""))
 		printf("Comando inválido. Intente nuevamente.\n");	
 }
