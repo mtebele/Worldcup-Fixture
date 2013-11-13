@@ -7,7 +7,7 @@
 #include "sistema.h"
 
 #define CANT_COMANDOS 12
-#define MAX_PARAMETROS 500
+#define MAX_PARAMETROS 50
 #define comparar(a,b) strcmp(a,b)==0
 
 /****************************************
