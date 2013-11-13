@@ -37,6 +37,7 @@ char* trim(char* str)
 	return start;
 }
 
+
 void wc_ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int cantidad)
 {
 	// Compara el comando y ejecuta la acción correspondiente
@@ -59,10 +60,12 @@ void wc_ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, 
 		while (!lista_esta_vacia(lista)) {
 			char** datos = lista_borrar_primero(lista);
 			printf("%s,%s: Goles: %s\n", datos[0], datos[1], datos[2]);
+			for(int i=0; i < 3; i++)				
+				free(datos[i]);			
 			free(datos);
 			//mensaje_listar_jugadores(datos[0], atoi(datos[1]), atoi(datos[2])); //TOFIX
 		}
-		lista_destruir(lista, free);
+		lista_destruir(lista, NULL);
 	}
 	else if (comparar(comando, "LISTAR_GOLEADOR")) {
 		char** datos = sistema_listar_goleador(sistema);
