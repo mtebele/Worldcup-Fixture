@@ -41,6 +41,43 @@ char *strdup(const char *s)
     return n;
 }
 
+void itoa(char *buf, int base, int d) {
+	char *p = buf;
+	char *p1, *p2;
+	unsigned long ud = d;
+	int divisor = 10;
+
+	/* If %d is specified and D is minus, put `-' in the head.  */
+	if (base == 'd' && d < 0) {
+		*p++ = '-';
+		buf++;
+		ud = -d;
+	} else if (base == 'x') {
+		divisor = 16;
+	}
+
+	/* Divide UD by DIVISOR until UD == 0.  */
+	do {
+	int remainder = ud % divisor;
+
+	*p++ = (remainder < 10) ? remainder + '0' : remainder + 'a' - 10;
+	} while (ud /= divisor);
+
+	/* Terminate BUF.  */
+	*p = 0;
+
+	/* Reverse BUF.  */
+	p1 = buf;
+	p2 = p - 1;
+	while (p1 < p2) {
+		char tmp = *p1;
+		*p1 = *p2;
+		*p2 = tmp;
+		p1++;
+		p2--;
+	}
+}
+
  /******************************************************************
  *                IMPLEMENTACION DE LAS PRIMITIVAS
  ******************************************************************/
@@ -173,13 +210,13 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, char* nombre)
 	if (strcmp(modo, "dorsal") == 0) {
 		for (int i = 0; i < MAX_JUG; i++) {
 			jugador_t* jugador = plantel[i];
-			char buf_dorsal[10];
-			char buf_goles[10];
-			char* datos[3];
+			char buf_dorsal[2];
+			char buf_goles[2];
+			char **datos = malloc(sizeof(char*) * 3);
 			datos[0] = jugador_nombre(jugador);
-			snprintf(buf_dorsal, 10, "%d", jugador_dorsal(jugador));
+			itoa(buf_dorsal,10,jugador_dorsal(jugador));
 			datos[1] = strdup(buf_dorsal);
-			snprintf(buf_goles, 10, "%d", jugador_goles(jugador));
+			itoa(buf_goles,10,jugador_goles(jugador));
 			datos[2] = strdup(buf_goles);
 			
 			printf("Nombre: %s | Dorsal: %s | Goles: %s\n", datos[0], datos[1], datos[2]);
