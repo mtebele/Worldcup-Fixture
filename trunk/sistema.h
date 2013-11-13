@@ -47,7 +47,7 @@ sistema_t* sistema_crear();
 
 resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]);
 
-lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[]);
+lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, equipo_t *equipo);
 
 char** sistema_listar_goleador(sistema_t* sistema);
 
