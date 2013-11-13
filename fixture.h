@@ -18,16 +18,37 @@ typedef struct fixture fixture_t;
                 PRIMITIVAS DE JUGADOR
 ******************************************************/
 
+// Crea un fixture con la cantidad de partidos recibida.
+// Post: Crea un fixture con tantos partidos como can-
+// tidad recibida por parámetro. 
 fixture_t *fixture_crear(size_t cantidad);
 
+// Carga un fixture con los equipos recibidos en una lista.
+// Pre: El fixture fue creado.
+// Post: Agrega los equipos de la lista a los partidos
+// de la fase inicial del fixture. Devuelve true si la
+// operación es exitosa. False en caso contrario.
 bool fixture_cargar(fixture_t* fixture, lista_t* lista);
 
-partido_t* fixture_partido(fixture_t *fixture, char* idr, size_t cantidad);
+// Obtiene el partido con identificador "idr" del fixture.
+// Pre: El fixture fue creado.
+// Post: Devuelve el partido con identificador "idr" del fixture.
+partido_t* fixture_partido(fixture_t *fixture, char* idr, size_t cantidad); //PODRÏAMOS CAMBIAR ESTO Y QUE NO RECIBA CANTIDAD; PARA QUE SEA MÄS TRANSPARENTE
 
-partido_t* fixture_clasificar_equipo(fixture_t *fixture, char* idr, size_t cantidad);
+// Obtiene la llave a la que clasifica el ganador del partido "idr".
+// Pre: El fixture fue creado
+// Devuelve la llave a la que clasifica el ganador del partido "idr". NULL si
+// El idr es inválido. 
+partido_t* fixture_clasificar_equipo(fixture_t *fixture, char* idr, size_t cantidad); //DEBERIAMOS CAMBIARLE EL NOMBRE, NO ES MUY DECLARATIVO
 
+// Determina si un partido es final en el fixture.
+// Pre: El sistema fue creado.
+// Post: Devuelve true si el partido es la final, false en otro caso.
 bool fixture_final(fixture_t *fixture, char* idr, size_t cantidad);
 
+// Destruye el fixture.
+// Pre: El fixture fue creado.
+// Post: El fixture es destruido.
 void fixture_destruir(fixture_t *fixture);
 
 size_t fixture_cantidad(fixture_t *fixture);

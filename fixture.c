@@ -107,8 +107,9 @@ partido_t* fixture_clasificar_equipo(fixture_t *fixture, char* idr, size_t canti
 
 bool fixture_final(fixture_t *fixture, char* idr, size_t cantidad)
 {
-	int pos = idrtopos(idr, cantidad - 1);
-	if (pos == cantidad)
+	int pos = idrtopos(idr, cantidad);
+	printf("LA POSICIÓN DEL PARTIDO actual es %i\n", pos);
+	if (pos == cantidad-1)
 		return true;
 	return false;
 }
