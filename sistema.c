@@ -147,19 +147,15 @@ printf("OBTIENE EQUIPOS\n");
 }
 
 // OPTIMIZAR ESTO
-lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
+lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, equipo_t *equipo)
 {
-	char* orden = vec_parametros[0];
-	char* nombre = vec_parametros[1];
-		
-	equipo_t* equipo = hash_obtener(sistema->equipos, nombre);
-	if (!equipo) return NULL;
-	
+	char *nombre = equipo_nombre(equipo);	
+
 	lista_t* lista = lista_crear();
 	if (lista == NULL) return NULL;
 
 	jugador_t** plantel = equipo_plantel(equipo);
-	if (strcmp(orden, "dorsal") == 0) {
+	if (strcmp(modo, "dorsal") == 0) {
 		for (int i = 0; i < MAX_JUG; i++) {
 			jugador_t* jugador = plantel[i];
 			char buf_dorsal[10];
@@ -177,7 +173,7 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 		}
 		puts("termina for");
 	}
-	else {
+	if (strcmp(modo, "nombre") == 0) {
 		abb_t* abb_jugadores = abb_crear(sistema->comparar, jugador_destruir);
 		for (int i = 0; i < MAX_JUG; i++) {
 			jugador_t* jugador = plantel[i];
@@ -195,7 +191,8 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* vec_parametros[])
 			lista_insertar_ultimo(lista, datos);
 		}
 	}
-	
+	else printf("Modo de consulta inválido\n");
+
 	return lista;
 }
 

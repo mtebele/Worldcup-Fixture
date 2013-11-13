@@ -37,6 +37,51 @@ char* trim(char* str)
 	return start;
 }
 
+void wc_ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int cantidad)
+{
+	// Compara el comando y ejecuta la acción correspondiente
+	if (comparar(comando, "AGREGAR_RESULTADO")) {
+		resultado_t res = sistema_agregar_resultado(sistema, parametros);
+		if(res == OK) printf("OK\n");
+		if(res == NONE) printf("ERROR.\n");
+	}
+	else if (comparar(comando, "LISTAR_JUGADORES") && cantidad == 1) {
+		char* cadena = parametros[0];
+		char* modo = strtok(cadena, " ");
+		char* nombre = strtok(NULL, " ");
+
+		equipo_t* equipo = hash_obtener(sistema->equipos, nombre);
+
+		if (!equipo) {
+			printf("Error, el equipo %s no está inscripto\n", nombre);
+			return;
+		}
+	
+		lista_t* lista = sistema_listar_jugadores(sistema, modo, equipo);
+					
+		while (!lista_esta_vacia(lista)) {
+			char** datos = lista_borrar_primero(lista);
+			printf("%s,%s: Goles: %s\n", datos[0], datos[1], datos[2]);
+			free(datos);
+			//mensaje_listar_jugadores(datos[0], atoi(datos[1]), atoi(datos[2])); //TOFIX
+		}
+		lista_destruir(lista, free);
+	}
+	else if (comparar(comando, "LISTAR_GOLEADOR")) {
+		char** datos = sistema_listar_goleador(sistema);
+		mensaje_listar_goleador(datos[0], datos[1], atoi(datos[2]));
+	}
+	else if (comparar(comando, "GOLES_JUGADOR")) {
+		char* jugador = parametros[0];
+		char** datos = sistema_goles_jugador(sistema, jugador);
+		mensaje_goles_jugador(jugador, atoi(datos[0]), datos[1], atoi(datos[2]));
+	}
+	else if (comparar(comando, "MOSTRAR_RESULTADO"))
+		sistema_mostrar_resultado(sistema, parametros[0]);
+	else if (!comparar(comando, ""))
+		printf("Comando inválido. Intente nuevamente.\n");	
+}
+
 void wc_iniciar(sistema_t* sistema, lista_t* lista_equipos)
 {
 	sistema_cargar_fixture(sistema, lista_equipos);
@@ -55,38 +100,7 @@ void wc_iniciar(sistema_t* sistema, lista_t* lista_equipos)
 		
 		upcase(comando);
 		
-		// Compara el comando y ejecuta la acción correspondiente
-		if (comparar(comando, "AGREGAR_RESULTADO")) {
-			resultado_t res = sistema_agregar_resultado(sistema, vec_parametros);
-			if(res == OK) printf("OK\n");
-			if(res == NONE) printf("ERROR.\n");
-		}
-		else if (comparar(comando, "LISTAR_JUGADORES")) {
-			char* cadena = vec_parametros[0];
-			vec_parametros[0] = strtok(cadena, " ");
-			vec_parametros[1] = strtok(NULL, " ");
-			lista_t* lista = sistema_listar_jugadores(sistema, vec_parametros);
-						
-			while (!lista_esta_vacia(lista)) {
-				char** datos = lista_borrar_primero(lista);
-				printf("%s,%s: Goles: %s\n", datos[0], datos[1], datos[2]);
-				//mensaje_listar_jugadores(datos[0], atoi(datos[1]), atoi(datos[2])); //TOFIX
-			}
-			lista_destruir(lista, free);
-		}
-		else if (comparar(comando, "LISTAR_GOLEADOR")) {
-			char** datos = sistema_listar_goleador(sistema);
-			mensaje_listar_goleador(datos[0], datos[1], atoi(datos[2]));
-		}
-		else if (comparar(comando, "GOLES_JUGADOR")) {
-			char* jugador = vec_parametros[0];
-			char** datos = sistema_goles_jugador(sistema, jugador);
-			mensaje_goles_jugador(jugador, atoi(datos[0]), datos[1], atoi(datos[2]));
-		}
-		else if (comparar(comando, "MOSTRAR_RESULTADO"))
-			sistema_mostrar_resultado(sistema, vec_parametros[0]);
-		else if (!comparar(comando, ""))
-			printf("Comando inválido. Intente nuevamente.\n");		
+		wc_ejecutar_servicio(sistema, comando, vec_parametros, cantidad);
 		
 		for (int i = 0; i < cantidad; i++)
 			free(vec_parametros[i]);	
