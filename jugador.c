@@ -46,14 +46,13 @@ char* jugador_nombre(jugador_t *jugador)
 	return strdup(jugador->nombre);
 }
 
-int jugador_goles(jugador_t *jugador)
+int jugador_goles(const jugador_t *jugador)
 {
 	return jugador->goles;
 }
 
 void jugador_agregar_gol(jugador_t *jugador)
 {
-	printf("GOLAZO DE: %s\n", jugador_nombre(jugador));
 	jugador->goles++;
 }
 

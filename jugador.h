@@ -46,7 +46,7 @@ char* jugador_nombre(jugador_t *jugador);
 // Obtiene los goles del jugador
 // Pre: El jugador fue creado.
 // Post: Devuelve los goles del jugador.
-int jugador_goles(jugador_t *jugador);
+int jugador_goles(const jugador_t *jugador);
 
 // Agrega goles al historial del jugador.
 // Pre: El jugador fue creado, goles es un número mayor a 0.

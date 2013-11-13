@@ -54,13 +54,11 @@ bool partido_agregar_visitante(partido_t *partido, char *equipo)
 
 bool partido_simular(partido_t *partido, int goles_local, int goles_visita)
 {
-	puts("simula");
 	if(!partido) return false;
 	if (partido->jugado) return false;
 	partido->goles_local = goles_local;
 	partido->goles_visitante = goles_visita;
 	partido->jugado = true;
-	puts("end simula");
 	return true;
 }
 
