@@ -50,15 +50,12 @@ void wc_ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, 
 		char* modo = strtok(cadena, " ");
 		char* nombre = strtok(NULL, " ");
 
-		equipo_t* equipo = hash_obtener(sistema->equipos, nombre);
-
-		if (!equipo) {
+		lista_t* lista = sistema_listar_jugadores(sistema, modo, nombre);
+		
+		if (!lista){		
 			printf("Error, el equipo %s no está inscripto\n", nombre);
 			return;
-		}
-	
-		lista_t* lista = sistema_listar_jugadores(sistema, modo, equipo);
-					
+		}			
 		while (!lista_esta_vacia(lista)) {
 			char** datos = lista_borrar_primero(lista);
 			printf("%s,%s: Goles: %s\n", datos[0], datos[1], datos[2]);

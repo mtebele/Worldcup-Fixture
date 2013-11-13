@@ -147,9 +147,11 @@ printf("OBTIENE EQUIPOS\n");
 }
 
 // OPTIMIZAR ESTO
-lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, equipo_t *equipo)
+lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, char* nombre)
 {
-	char *nombre = equipo_nombre(equipo);	
+	equipo_t* equipo = hash_obtener(sistema->equipos, nombre);
+	if (!equipo) 
+		return NULL;
 
 	lista_t* lista = lista_crear();
 	if (lista == NULL) return NULL;
@@ -173,7 +175,7 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, equipo_t *equi
 		}
 		puts("termina for");
 	}
-	if (strcmp(modo, "nombre") == 0) {
+	else if (strcmp(modo, "nombre") == 0) {
 		abb_t* abb_jugadores = abb_crear(sistema->comparar, jugador_destruir);
 		for (int i = 0; i < MAX_JUG; i++) {
 			jugador_t* jugador = plantel[i];
