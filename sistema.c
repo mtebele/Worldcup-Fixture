@@ -88,8 +88,7 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 	char *nombre_visitante = partido_visitante(partido);
 
 	bool ok = partido_jugar(partido, goles_local, goles_visitante);
-	if (!ok)
-		return RESULTADO_YAEXISTE;
+	if (!ok) return RESULTADO_YAEXISTE;
 
 	equipo_t* local = hash_obtener(sistema->equipos, nombre_local);
 	equipo_t* visitante = hash_obtener(sistema->equipos, nombre_visitante);
@@ -137,15 +136,15 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, char* nombre)
 {
 	equipo_t* equipo = hash_obtener(sistema->equipos, nombre);
-	if (!equipo) 
-		return NULL;
+	if (!equipo) return NULL;
 
 	lista_t* lista = lista_crear();
-	if (lista == NULL) return NULL;
+	if (!lista) return NULL;
 
 	jugador_t** plantel = equipo_plantel(equipo);
+	upcase(modo);
 
-	if (strcmp(modo, "dorsal") == 0) {
+	if (strcmp(modo, "DORSAL") == 0) {
 		for (int i = 0; i < MAX_JUG; i++) {
 			jugador_t* jugador = plantel[i];
 			char buf_dorsal[2];
@@ -160,7 +159,7 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, char* nombre)
 			lista_insertar_ultimo(lista, datos);
 		}
 	}
-	else if (strcmp(modo, "nombre") == 0) {
+	else if (strcmp(modo, "NOMBRE") == 0) {
 		abb_t* abb_jugadores = abb_crear(sistema->comparar, NULL);		
 		for (int i = 0; i < MAX_JUG; i++) {
 			jugador_t* jugador = plantel[i]; 
@@ -210,6 +209,7 @@ char** sistema_goles_jugador(sistema_t* sistema, char* nombre)
 {
 	jugador_t* jugador = hash_obtener(sistema->jugadores, nombre);
 	if (!jugador) return NULL;
+	
 	char** datos = malloc(3 * sizeof(char*));
 	char buf_dorsal[2];
 	char buf_goles[2];	
@@ -255,8 +255,7 @@ bool sistema_agregar_jugador(sistema_t* sistema, int dorsal, char* equipo, char*
 {
 	// Crea el jugador
 	jugador_t* jugador = jugador_crear(nombre, equipo, dorsal);
-	if (!jugador)
-		return false;
+	if (!jugador) return false;
 	
 	// Agrega el jugador al hash (jugadores)
 	if (!hash_guardar(sistema->jugadores, nombre, jugador))
@@ -286,10 +285,10 @@ bool sistema_cargar_fixture(sistema_t* sistema, lista_t* lista)
 // Post: El sistema es destruido.
 void sistema_destruir(sistema_t* sistema)
 {
-	fixture_destruir(sistema->fixture);	// COMO BORRAR TODOS LOS PARTIDOS?
+	fixture_destruir(sistema->fixture);
 	hash_destruir(sistema->jugadores);	
-	hash_destruir(sistema->equipos);	//destruyo 2 veces??
-	heap_destruir(sistema->goleadores, NULL);	//destruí todo antes!
+	hash_destruir(sistema->equipos);
+	heap_destruir(sistema->goleadores, NULL);
 	free(sistema);
 	return;
 }

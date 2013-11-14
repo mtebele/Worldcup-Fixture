@@ -66,5 +66,3 @@ void equipo_destruir(void *equipo)
 	free(team->nombre);
 	free(team);
 }
-
-

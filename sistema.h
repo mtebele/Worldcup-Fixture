@@ -16,6 +16,7 @@
 #include "jugador.h"
 #include "partido.h"
 #include "fixture.h"
+#include "utils.h"
 
 /******************************************************************
  *                DEFINICION DE LOS TIPOS DE DATOS

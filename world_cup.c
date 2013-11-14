@@ -19,10 +19,11 @@ void ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int
 	// Compara el comando y ejecuta la acción correspondiente
 	if (comparar(comando, "AGREGAR_RESULTADO")) {
 		resultado_t res = sistema_agregar_resultado(sistema, parametros);
+		char* idr = parametros[0];
 		switch (res) {
 			case OK: mensaje_ok(); break;
-			case RESULTADO_NOEXISTE: mensaje_resultado_no_existente(parametros[0]); break;
-			case RESULTADO_YAEXISTE: mensaje_resultado_ya_existente(parametros[0]); break;
+			case RESULTADO_NOEXISTE: mensaje_resultado_no_existente(idr); break;
+			case RESULTADO_YAEXISTE: mensaje_resultado_ya_existente(idr); break;
 			default: mensaje_error();
 		}
 	}
@@ -39,9 +40,12 @@ void ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int
 		}			
 		while (!lista_esta_vacia(lista)) {
 			char** datos = lista_borrar_primero(lista);
-			mensaje_listar_jugadores(datos[0], atoi(datos[1]), atoi(datos[2]));
+			char* jugador = datos[0];
+			int dorsal = atoi(datos[1]);
+			int goles = atoi(datos[2]);
+			mensaje_listar_jugadores(jugador, dorsal, goles);
 			
-			for(int i=0; i < 3; i++)				
+			for (int i=0; i < 3; i++)				
 				free(datos[i]);
 			free(datos);
 		}
@@ -49,7 +53,10 @@ void ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int
 	}
 	else if (comparar(comando, "LISTAR_GOLEADOR")) {
 		char** datos = sistema_listar_goleador(sistema);
-		mensaje_listar_goleador(datos[0], datos[1], atoi(datos[2]));
+		char* jugador = datos[0];
+		char* equipo = datos[1];
+		int goles = atoi(datos[2]);
+		mensaje_listar_goleador(jugador, equipo, goles);
 	}
 	else if (comparar(comando, "GOLES_JUGADOR")) {
 		char* jugador = parametros[0];
@@ -57,13 +64,22 @@ void ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int
 		
 		if (!datos)
 			mensaje_jugador_no_inscripto(jugador);
-		else
-			mensaje_goles_jugador(jugador, atoi(datos[0]), datos[1], atoi(datos[2]));
+		else {
+			int dorsal = atoi(datos[0]);
+			char* equipo = datos[1];
+			int goles = atoi(datos[2]);
+			mensaje_goles_jugador(jugador, dorsal, equipo, goles);
+		}
 	}
 	else if (comparar(comando, "MOSTRAR_RESULTADO")){
 			char** datos = sistema_mostrar_resultado(sistema, parametros[0]);
 			if (datos) {
-				mensaje_mostrar_resultado(datos[0], atoi(datos[1]), datos[2], atoi(datos[3]));
+				char* equipo1 = datos[0];
+				int goles1 = atoi(datos[1]);
+				char* equipo2 = datos[2];
+				int goles2 = atoi(datos[3]);
+				
+				mensaje_mostrar_resultado(equipo1, goles1, equipo2, goles2);
 				free(datos[1]);
 				free(datos[3]);
 				free(datos);
@@ -72,7 +88,7 @@ void ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int
 				mensaje_resultado_no_existente(parametros[0]);
 		}
 	else if (!comparar(comando, ""))
-		printf("Comando inválido. Intente nuevamente.\n");	
+		mensaje_comando_invalido();
 }
 
 void iniciar(sistema_t* sistema, lista_t* lista_equipos)

@@ -10,7 +10,7 @@
 	MODULO PARA IMPRIMIR MENSAJES
 ****************************************/
 
-void mensaje_formato_invalido();
+void mensaje_comando_invalido();
 
 void mensaje_error();
 
