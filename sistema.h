@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "utils.h"
 #include "abb.h"
 #include "hash.h"
 #include "lista.h"
@@ -21,11 +22,8 @@
  ******************************************************************/
 
 typedef struct sistema sistema_t;
-typedef enum {OK, EQUIPO_NOINSCRIPTO, NONE} resultado_t;
-
-// Clona una cadena con memoria dinámica
-char *strdup(const char *s);
-		      
+typedef enum {OK, RESULTADO_NOEXISTE, RESULTADO_YAEXISTE, ERROR} resultado_t;
+	      
 // Determinará el criterio de comparación entre claves.
 // Pre: las cadenas fueron creadas.
 // Post: devuelve un valor negativo si la primera clave es mayor, cero si
@@ -75,7 +73,7 @@ char** sistema_goles_jugador(sistema_t* sistema, char* nombre);
 // Pre: El sistema fue creado.
 // Post: Devuelve equipos involucrados junto con los goles anotados por cada uno
 // NULL si el idr no corresponde a un partido válido.
-char* sistema_mostrar_resultado(sistema_t* sistema, char* idr);
+char** sistema_mostrar_resultado(sistema_t* sistema, char* idr);
 
 // Agrega un equipo al sistema.
 // Pre: El sistema fue creado.

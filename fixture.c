@@ -17,17 +17,12 @@ struct fixture {
 /***************************************************
 		IMPLEMENTACION PRIMITIVAS DE JUGADOR
 ****************************************************/
-bool isnum(char c)
-{
-	return (c >= '0' && c <= '9');
-}
 
-int idrtopos(const char *idr, size_t n)
+int obtener_instancia(const char *idr, size_t n)
 {
 	int instancia = idr[0] - '0';
 	int i = 1;
-	while( isnum(idr[i]) )
-	{
+	while (isNumeric(idr[i])) {
 		instancia = 10 * instancia + idr[i] - '0';
 		i++;
 	}	
@@ -88,7 +83,7 @@ bool fixture_cargar(fixture_t* fixture, lista_t* lista)
 
 partido_t* fixture_partido(fixture_t *fixture, char* idr, size_t cantidad)
 {
-	int pos = idrtopos(idr, cantidad - 1);
+	int pos = obtener_instancia(idr, cantidad - 1);
 	if (pos >= 0 && pos < cantidad)
 		return fixture->partidos[pos];
 	return NULL;
@@ -97,7 +92,7 @@ partido_t* fixture_partido(fixture_t *fixture, char* idr, size_t cantidad)
 //devuelve el partido siguiente que le toca jugar
 partido_t* fixture_clasificar_equipo(fixture_t *fixture, char* idr, size_t cantidad)
 {
-	int pos = idrtopos(idr, cantidad - 1);
+	int pos = obtener_instancia(idr, cantidad - 1);
 	if (pos % 2 == 1)
 		pos--;
 	int offset = (cantidad - pos) / 2;
@@ -107,8 +102,7 @@ partido_t* fixture_clasificar_equipo(fixture_t *fixture, char* idr, size_t canti
 
 bool fixture_final(fixture_t *fixture, char* idr, size_t cantidad)
 {
-	int pos = idrtopos(idr, cantidad);
-	printf("LA POSICIÓN DEL PARTIDO actual es %i\n", pos);
+	int pos = obtener_instancia(idr, cantidad);
 	if (pos == cantidad-1)
 		return true;
 	return false;

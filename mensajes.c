@@ -49,7 +49,7 @@ void mensaje_listar_goleador(char* jugador, char* equipo, int goles) {
 }
 
 void mensaje_goles_jugador(char* jugador, int dorsal, char* equipo, int goles) {
-    printf("%s,%d: %s Goles:%d", jugador, dorsal, equipo, goles);
+    printf("%s,%d: %s Goles:%d\n", jugador, dorsal, equipo, goles);
 }
 
 void mensaje_mostrar_resultado(char* equipo1, int goles1, char* equipo2, int goles2) {

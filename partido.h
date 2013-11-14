@@ -45,7 +45,7 @@ bool partido_hay_clasificados(partido_t *partido);
 // Simula el resultado de un partido
 // Pre: El partido fue creado
 // Post: Marca el partido como realizado y actualiza la información del mismo.
-bool partido_simular(partido_t *partido, int gloc, int gvis);
+bool partido_jugar(partido_t *partido, int gloc, int gvis);
 
 // Obtiene el ganador del partido
 // Pre: el partido fue creado

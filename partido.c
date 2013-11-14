@@ -37,7 +37,7 @@ bool partido_agregar_local(partido_t *partido, char *equipo)
 {
 	if (!partido) return false;
 	if (!partido->local) {
-		partido->local = strdup(equipo); //strdup?
+		partido->local = strdup(equipo);
 		return true;
 	}
 	return false;
@@ -61,9 +61,9 @@ bool partido_hay_clasificados(partido_t *partido)
 	return hay_local && hay_visita;
 }
 
-bool partido_simular(partido_t *partido, int goles_local, int goles_visita)
+bool partido_jugar(partido_t *partido, int goles_local, int goles_visita)
 {
-	if(!partido) return false;
+	if (!partido) return false;
 	if (partido->jugado)
 		return false;
 	partido->goles_local = goles_local;
@@ -83,25 +83,25 @@ char* partido_ganador(partido_t *partido)
 
 char* partido_local(partido_t *partido)
 {
-	if(!partido) return NULL;	
+	if (!partido) return NULL;	
 	return partido->local;
 }
 
 char* partido_visitante(partido_t *partido)
 {
-	if(!partido) return NULL;	
+	if (!partido) return NULL;	
 	return partido->visitante;
 }
 
 int partido_goles_local(partido_t *partido)
 {
-	if(!partido) return -1;
+	if (!partido) return -1;
 	return partido->goles_local;
 }
 
 int partido_goles_visitante(partido_t *partido)
 {
-	if(!partido) return -1;
+	if (!partido) return -1;
 	return partido->goles_visitante;
 }
 

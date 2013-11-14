@@ -7,12 +7,15 @@
 #include <stddef.h>
 #include "partido.h"
 #include "lista.h"
+#include "utils.h"
 
 /*****************************************************
           DEFINICION DE LOS TIPOS DE DATOS
  ****************************************************/
 
 typedef struct fixture fixture_t;
+
+int obtener_instancia(const char *idr, size_t n);
 
 /******************************************************
                 PRIMITIVAS DE JUGADOR
