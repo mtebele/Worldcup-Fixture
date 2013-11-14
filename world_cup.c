@@ -126,14 +126,14 @@ void iniciar(sistema_t* sistema, lista_t* lista_equipos)
 	sistema_destruir(sistema);
 }
 
-void cargar_archivo(sistema_t *sistema, char *nombrearch, lista_t *lista_equipos)
+lista_t* cargar_archivo(sistema_t *sistema, char *nombrearch, lista_t *lista_equipos)
 {
 	FILE *archivo;
 	char linea[BUFSIZ];
 	char* equipo;
 
 	archivo = fopen(nombrearch, "r");
-
+	lista_t *equipos = lista_crear();
 	if (!archivo)
 		puts("Error de apertura del archivo.");
 	else {
@@ -148,6 +148,7 @@ void cargar_archivo(sistema_t *sistema, char *nombrearch, lista_t *lista_equipos
 					equipo = strdup(trim(linea));
 					sistema_agregar_equipo(sistema, equipo);
 					lista_insertar_ultimo(lista_equipos, equipo);
+					lista_insertar_ultimo(equipos, equipo);
 				}
 				else {
 					// Jugador
@@ -162,6 +163,7 @@ void cargar_archivo(sistema_t *sistema, char *nombrearch, lista_t *lista_equipos
 	}
 //	free(equipo);
 	fclose(archivo);
+	return equipos;
 }
 
 /* Programa principal. */ 
@@ -172,8 +174,9 @@ int main(int argc, char *argv[])
 	lista_t* lista_equipos = lista_crear();
  	
 	if (argc > 1) {
-		cargar_archivo(sistema, argv[1], lista_equipos);
+		lista_t *lis = cargar_archivo(sistema, argv[1], lista_equipos);
 		iniciar(sistema, lista_equipos);
+		lista_destruir(lis, free);
 	}
 	else
 		printf("Uso: TP2 <archivo>\n");
