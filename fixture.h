@@ -54,8 +54,14 @@ bool fixture_final(fixture_t *fixture, char* idr, size_t cantidad);
 // Post: El fixture es destruido.
 void fixture_destruir(fixture_t *fixture);
 
+// Obtiene la cantidad de partidos del fixture.
+// Pre: El fixture fue creado.
+// Post: Devuelve la cantidad de partidos del fixture.
 size_t fixture_cantidad(fixture_t *fixture);
 
+// Obtiene la cantidad de partidos que puede guardar el fixture.
+// Pre: El fixture fue creado.
+// Post: Devuelve la cantidad de partidos que puede guardar el fixture.
 size_t fixture_tamanio(fixture_t *fixture);
 
 #endif // FIXTURE_H
