@@ -151,10 +151,8 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, char* nombre)
 			char buf_goles[2];
 			char **datos = malloc(sizeof(char*) * 3);
 			datos[0] = jugador_nombre(jugador);
-			//itoa(buf_dorsal,10,jugador_dorsal(jugador));
 			snprintf(buf_dorsal, 3, "%d", jugador_dorsal(jugador));
 			datos[1] = strdup(buf_dorsal);
-			//itoa(buf_goles,10,jugador_goles(jugador));
 			snprintf(buf_goles, 10, "%d", jugador_goles(jugador));
 			datos[2] = strdup(buf_goles);
 			
@@ -178,10 +176,8 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, char* nombre)
 			char buf_goles[2];
 			char **datos = malloc(sizeof(char*) * 3);
 			datos[0] = jugador_nombre(jugador);
-			//itoa(buf_dorsal,10,jugador_dorsal(jugador));
 			snprintf(buf_dorsal, 3, "%d", jugador_dorsal(jugador));
 			datos[1] = strdup(buf_dorsal);
-			//itoa(buf_goles,10,jugador_goles(jugador));
 			snprintf(buf_goles, 10, "%d", jugador_goles(jugador));
 			datos[2] = strdup(buf_goles);
 			lista_insertar_ultimo(lista, datos);
@@ -204,7 +200,6 @@ char** sistema_listar_goleador(sistema_t* sistema)
 	char** datos = malloc(3 * sizeof(char*));
 	datos[0] = jugador_nombre(jugador);
 	datos[1] = jugador_equipo(jugador);
-	//itoa(buf_goles, 10, jugador_goles(jugador));
 	snprintf(buf_goles, 10, "%d", jugador_goles(jugador));
 	datos[2] = strdup(buf_goles);
 	return datos;
@@ -218,11 +213,9 @@ char** sistema_goles_jugador(sistema_t* sistema, char* nombre)
 	char** datos = malloc(3 * sizeof(char*));
 	char buf_dorsal[2];
 	char buf_goles[2];	
-	//itoa(buf_dorsal,10,jugador_dorsal(jugador));
 	snprintf(buf_dorsal, 3, "%d", jugador_dorsal(jugador));
 	datos[0] = strdup(buf_dorsal);
 	datos[1] = jugador_equipo(jugador);
-	//itoa(buf_goles,10,jugador_goles(jugador));
 	snprintf(buf_goles, 10, "%d", jugador_goles(jugador));
 	datos[2] = strdup(buf_goles);
 	return datos;
@@ -241,11 +234,9 @@ char** sistema_mostrar_resultado(sistema_t* sistema, char* idr)
 		char buf_visita[2];
 		
 		datos[0] = partido_local(partido);
-		//itoa(buf_local, 10, partido_goles_local(partido));
 		snprintf(buf_local, 10, "%d", partido_goles_local(partido));
 		datos[1] = strdup(buf_local);
 		datos[2] = partido_visitante(partido);
-		//itoa(buf_visita, 10, partido_goles_visitante(partido));
 		snprintf(buf_visita, 10, "%d", partido_goles_visitante(partido));
 		datos[3] = strdup(buf_visita);
 	}		

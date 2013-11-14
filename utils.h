@@ -10,9 +10,6 @@
 // Clona una cadena con memoria dinámica
 char *strdup(const char *s);
 
-// Convierte int a char*
-void itoa(char *buf, int base, int d);
-
 // Devuelve true si el char es un número, false caso contrario
 bool isNumeric(char c);
 
