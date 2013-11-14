@@ -57,6 +57,9 @@ void ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int
 		char* equipo = datos[1];
 		int goles = atoi(datos[2]);
 		mensaje_listar_goleador(jugador, equipo, goles);
+		for (int i=0; i < 3; i++)				
+				free(datos[i]);
+		free(datos);		
 	}
 	else if (comparar(comando, "GOLES_JUGADOR")) {
 		char* jugador = parametros[0];
@@ -69,6 +72,9 @@ void ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int
 			char* equipo = datos[1];
 			int goles = atoi(datos[2]);
 			mensaje_goles_jugador(jugador, dorsal, equipo, goles);
+			for (int i=0; i < 3; i++)				
+					free(datos[i]);
+			free(datos);				
 		}
 	}
 	else if (comparar(comando, "MOSTRAR_RESULTADO")){
@@ -134,6 +140,7 @@ void cargar_archivo(sistema_t *sistema, char *nombrearch, lista_t *lista_equipos
  		int i = 0;
 		while (feof(archivo) == 0) {
 			int dorsal = i % 24;
+			
 			if (fgets(linea, BUFSIZ, archivo)) {
 				trim(linea);
 				if (dorsal == 0) {

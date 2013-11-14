@@ -113,7 +113,7 @@ void partido_destruir(partido_t *partido)
 	if (!partido) return;
 	if (partido->local)
 		free(partido->local);
-	else if (partido->visitante)
+	if (partido->visitante)
 		free(partido->visitante);
 	free(partido);
 }
