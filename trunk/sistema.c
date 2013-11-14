@@ -32,74 +32,6 @@ int cmp_goles(const void *s1, const void *s2)
 	return 0;
 }
 
-// Clona una cadena con memoria dinámica
-char *strdup(const char *s)
-{
-    char *n = malloc(strlen(s) + 1);
-    if(n == NULL) return NULL;
-    strcpy(n, s);
-    return n;
-}
-
-void itoa(char *buf, int base, int d) {
-	char *p = buf;
-	char *p1, *p2;
-	unsigned long ud = d;
-	int divisor = 10;
-
-	/* If %d is specified and D is minus, put `-' in the head.  */
-	if (base == 'd' && d < 0) {
-		*p++ = '-';
-		buf++;
-		ud = -d;
-	} else if (base == 'x') {
-		divisor = 16;
-	}
-
-	/* Divide UD by DIVISOR until UD == 0.  */
-	do {
-	int remainder = ud % divisor;
-
-	*p++ = (remainder < 10) ? remainder + '0' : remainder + 'a' - 10;
-	} while (ud /= divisor);
-
-	/* Terminate BUF.  */
-	*p = 0;
-
-	/* Reverse BUF.  */
-	p1 = buf;
-	p2 = p - 1;
-	while (p1 < p2) {
-		char tmp = *p1;
-		*p1 = *p2;
-		*p2 = tmp;
-		p1++;
-		p2--;
-	}
-}
-
-
-bool esnum(char c)
-{
-	return (c >= '0' && c <= '9');
-}
-
-int idrapos(const char *idr, size_t n)
-{
-	int instancia = idr[0] - '0';
-	int i = 1;
-	while( esnum(idr[i]) )
-	{
-		instancia = 10 * instancia + idr[i] - '0';
-		i++;
-	}	
-	if (instancia == 1) return n-1;
-	int inicio_instancia = n + 1 - 2*instancia;
-	int letra = idr[1] - 'a';
-	int pos = inicio_instancia + letra;
-	return pos;
-}
-
  /******************************************************************
  *                IMPLEMENTACION DE LAS PRIMITIVAS
  ******************************************************************/
@@ -149,22 +81,15 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 	partido_t *partido = fixture_partido(sistema->fixture, idr, cantidad);
 
 	/*Obtengo los equipos involucrados*/
-	if(!partido_hay_clasificados(partido))
-	{
-		printf("El partido con id %s no existe\n", idr);
-		return NONE;
-	}
+	if (!partido_hay_clasificados(partido))
+		return RESULTADO_NOEXISTE;
+
 	char *nombre_local = partido_local(partido);
 	char *nombre_visitante = partido_visitante(partido);
-printf("%s vs %s\n", nombre_local, nombre_visitante);
 
-	bool simulado = partido_simular(partido, goles_local, goles_visitante);
-	if (!simulado)
-	{
-		printf("ya lo simulé\n");
-		return NONE; //algo, no se si none
-	}
-	
+	bool ok = partido_jugar(partido, goles_local, goles_visitante);
+	if (!ok)
+		return RESULTADO_YAEXISTE;
 
 	equipo_t* local = hash_obtener(sistema->equipos, nombre_local);
 	equipo_t* visitante = hash_obtener(sistema->equipos, nombre_visitante);
@@ -174,7 +99,6 @@ printf("%s vs %s\n", nombre_local, nombre_visitante);
 	int offset_local = 3;
 	while (i < goles_local) {
 		int dorsal = atoi(vec_parametros[i+offset_local]);
-		//printf("dorsal loc: %d\n", dorsal);
 		equipo_agregar_gol(local, dorsal);
 		i++;
 	}
@@ -183,7 +107,6 @@ printf("%s vs %s\n", nombre_local, nombre_visitante);
 	i = 0;
 	while (i < goles_visitante) {
 		int dorsal = atoi(vec_parametros[i+offset_visita]);
-		//printf("dorsal vis: %d\n", dorsal);
 		equipo_agregar_gol(visitante, dorsal);
 		i++;
 	}
@@ -196,29 +119,21 @@ printf("%s vs %s\n", nombre_local, nombre_visitante);
 		return OK;
 	
 	char* ganador = partido_ganador(partido);
-	printf("Pasa %s\n", ganador);
 	partido_t* partido_siguiente = fixture_clasificar_equipo(sistema->fixture, idr, cantidad);
 	
 	bool clasifico;
-	int pos = idrapos(idr, fixture_tamanio(sistema->fixture));
-	printf("la posición del partido %s es: %i\n",idr, pos);
-	if (pos % 2 == 0){
-			printf("Clasifico %s como local\n", ganador);
-			clasifico = partido_agregar_local(partido_siguiente, ganador);
-	}	
-	else{
-		printf("Clasifico %s como visitante\n", ganador);
+	int pos = obtener_instancia(idr, fixture_tamanio(sistema->fixture));
+	if (pos % 2 == 0)
+		clasifico = partido_agregar_local(partido_siguiente, ganador);
+	else
 		clasifico = partido_agregar_visitante(partido_siguiente, ganador);
-	}
 
-	if (clasifico)
-		return OK;
-	
+	if (!clasifico)
+		return ERROR;
 
-	return NONE;
+	return OK;
 }
 
-// OPTIMIZAR ESTO
 lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, char* nombre)
 {
 	equipo_t* equipo = hash_obtener(sistema->equipos, nombre);
@@ -242,13 +157,11 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, char* nombre)
 			itoa(buf_goles,10,jugador_goles(jugador));
 			datos[2] = strdup(buf_goles);
 			
-//			printf("Nombre: %s | Dorsal: %s | Goles: %s\n", datos[0], datos[1], datos[2]);
-			
 			lista_insertar_ultimo(lista, datos);
 		}
 	}
 	else if (strcmp(modo, "nombre") == 0) {
-		abb_t* abb_jugadores = abb_crear(sistema->comparar, NULL);
+		abb_t* abb_jugadores = abb_crear(sistema->comparar, NULL);		
 		for (int i = 0; i < MAX_JUG; i++) {
 			jugador_t* jugador = plantel[i]; 
 			char* nombre = jugador_nombre(jugador);			
@@ -308,26 +221,27 @@ char** sistema_goles_jugador(sistema_t* sistema, char* nombre)
 	return datos;
 }
 
-char* sistema_mostrar_resultado(sistema_t* sistema, char* idr)
+char** sistema_mostrar_resultado(sistema_t* sistema, char* idr)
 {
 	size_t cantidad = sistema_cantidad_equipos(sistema);
 	partido_t *partido = fixture_partido(sistema->fixture, idr, cantidad);
 	if (!partido) return NULL;
-
-	char linea[BUFSIZ];
+	
+	char** datos = NULL;
 	if (partido_jugado(partido)) {
-		char *local = partido_local(partido);
-		int goles_loc = partido_goles_local(partido);
-		char *visita = partido_visitante(partido);
-		int goles_vis = partido_goles_visitante(partido);
-		sprintf(linea, "%s,%i: %s Goles: %i", local, goles_loc, visita, goles_vis);
-		free(local);
-		free(visita);
-	}
-	else
-		sprintf(linea, "Error : el resultado con id %s no existe", idr);
+		datos = malloc(4 * sizeof(char*));
+		char buf_local[2];
+		char buf_visita[2];
+		
+		datos[0] = partido_local(partido);
+		itoa(buf_local, 10, partido_goles_local(partido));
+		datos[1] = strdup(buf_local);
+		datos[2] = partido_visitante(partido);
+		itoa(buf_visita, 10, partido_goles_visitante(partido));
+		datos[3] = strdup(buf_visita);
+	}		
 
-	return strdup(linea);
+	return datos;
 }
 
 bool sistema_agregar_equipo(sistema_t* sistema, char* nombre)
