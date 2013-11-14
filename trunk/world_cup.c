@@ -54,7 +54,11 @@ void ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int
 	else if (comparar(comando, "GOLES_JUGADOR")) {
 		char* jugador = parametros[0];
 		char** datos = sistema_goles_jugador(sistema, jugador);
-		mensaje_goles_jugador(jugador, atoi(datos[0]), datos[1], atoi(datos[2]));
+		
+		if (!datos)
+			mensaje_jugador_no_inscripto(jugador);
+		else
+			mensaje_goles_jugador(jugador, atoi(datos[0]), datos[1], atoi(datos[2]));
 	}
 	else if (comparar(comando, "MOSTRAR_RESULTADO")){
 			char** datos = sistema_mostrar_resultado(sistema, parametros[0]);
