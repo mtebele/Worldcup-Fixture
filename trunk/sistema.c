@@ -200,7 +200,8 @@ char** sistema_listar_goleador(sistema_t* sistema)
 	char** datos = malloc(3 * sizeof(char*));
 	datos[0] = jugador_nombre(jugador);
 	datos[1] = jugador_equipo(jugador);
-	itoa(buf_goles, 10, jugador_goles(jugador));
+	//itoa(buf_goles, 10, jugador_goles(jugador));
+	snprintf(buf_goles, 2, "%d", jugador_goles(jugador));
 	datos[2] = strdup(buf_goles);
 	return datos;
 }
