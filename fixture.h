@@ -36,13 +36,13 @@ bool fixture_cargar(fixture_t* fixture, lista_t* lista);
 // Obtiene el partido con identificador "idr" del fixture.
 // Pre: El fixture fue creado.
 // Post: Devuelve el partido con identificador "idr" del fixture.
-partido_t* fixture_partido(fixture_t *fixture, char* idr, size_t cantidad); //PODRÏAMOS CAMBIAR ESTO Y QUE NO RECIBA CANTIDAD; PARA QUE SEA MÄS TRANSPARENTE
+partido_t* fixture_partido(fixture_t *fixture, char* idr, size_t cantidad);
 
 // Obtiene la llave a la que clasifica el ganador del partido "idr".
 // Pre: El fixture fue creado
 // Devuelve la llave a la que clasifica el ganador del partido "idr". NULL si
 // El idr es inválido. 
-partido_t* fixture_clasificar_equipo(fixture_t *fixture, char* idr, size_t cantidad); //DEBERIAMOS CAMBIARLE EL NOMBRE, NO ES MUY DECLARATIVO
+partido_t* fixture_clasificar_equipo(fixture_t *fixture, char* idr, size_t cantidad);
 
 // Determina si un partido es final en el fixture.
 // Pre: El sistema fue creado.
