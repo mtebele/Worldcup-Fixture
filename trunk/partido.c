@@ -16,7 +16,6 @@ struct partido {
 	int goles_visitante;
 };
 
-
 /***************************************************
 		IMPLEMENTACION PRIMITIVAS DE PARTIDO
 ****************************************************/
@@ -47,25 +46,23 @@ bool partido_agregar_visitante(partido_t *partido, char *equipo)
 {
 	if (!partido) return false;
 	if (!partido->visitante) {
-		partido->visitante = strdup(equipo); //strdup?
+		partido->visitante = strdup(equipo);
 		return true;
-	} else
+	}
 	return false;
 }
 
 bool partido_hay_clasificados(partido_t *partido)
 {
-	if(!partido) return false;
+	if (!partido) return false;
 	bool hay_local = (partido->local != NULL);
 	bool hay_visita = (partido->visitante != NULL);
-	return hay_local && hay_visita;
+	return (hay_local && hay_visita);
 }
 
 bool partido_jugar(partido_t *partido, int goles_local, int goles_visita)
 {
-	if (!partido) return false;
-	if (partido->jugado)
-		return false;
+	if (!partido || partido->jugado) return false;
 	partido->goles_local = goles_local;
 	partido->goles_visitante = goles_visita;
 	partido->jugado = true;
@@ -107,7 +104,7 @@ int partido_goles_visitante(partido_t *partido)
 
 bool partido_jugado(partido_t *partido)
 {
-	if(!partido) return false;
+	if (!partido) return false;
 	return partido->jugado;
 }
 
@@ -116,7 +113,7 @@ void partido_destruir(partido_t *partido)
 	if (!partido) return;
 	if (partido->local)
 		free(partido->local);
-	if (partido->visitante)
+	else if (partido->visitante)
 		free(partido->visitante);
 	free(partido);
 }

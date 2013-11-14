@@ -27,7 +27,6 @@ jugador_t *jugador_crear(char *nombre, char *equipo, int dorsal)
 	jugador->equipo = strdup(equipo);
 	jugador->dorsal = dorsal;
 	jugador->goles = 0;
-
 	return jugador;
 }
 
