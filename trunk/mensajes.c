@@ -33,11 +33,11 @@ void mensaje_equipo_ya_inscripto(char* equipo) {
 }
 
 void mensaje_equipo_no_inscripto(char* equipo) {
-    printf("Error: el equipo %s no esta inscipto en el fixture\n", equipo);
+    printf("Error: el equipo %s no esta inscripto en el fixture\n", equipo);
 }
 
 void mensaje_jugador_no_inscripto(char* jugador) {
-    printf("Error: el jugador %s no esta inscipto en el fixture\n", jugador);
+    printf("Error: el jugador %s no esta inscripto en el fixture\n", jugador);
 }
 
 void mensaje_listar_jugadores(char* jugador, int dorsal, int goles) {

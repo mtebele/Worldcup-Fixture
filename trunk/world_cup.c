@@ -29,19 +29,20 @@ void ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int
 	else if (comparar(comando, "LISTAR_JUGADORES") && cantidad == 1) {
 		char* cadena = parametros[0];
 		char* modo = strtok(cadena, " ");
-		char* nombre = strtok(NULL, " ");
+		char* nombre = strtok(NULL, "");
 
 		lista_t* lista = sistema_listar_jugadores(sistema, modo, nombre);
 		
-		if (!lista) {		
-			printf("Error, el equipo %s no está inscripto\n", nombre);
+		if (!lista)	{
+			mensaje_equipo_no_inscripto(nombre);
 			return;
 		}			
 		while (!lista_esta_vacia(lista)) {
 			char** datos = lista_borrar_primero(lista);
 			mensaje_listar_jugadores(datos[0], atoi(datos[1]), atoi(datos[2]));
+			
 			for(int i=0; i < 3; i++)				
-				free(datos[i]);			
+				free(datos[i]);
 			free(datos);
 		}
 		lista_destruir(lista, NULL);
@@ -110,7 +111,6 @@ void cargar_archivo(sistema_t *sistema, char *nombrearch, lista_t *lista_equipos
 	if (!archivo)
 		puts("Error de apertura del archivo.");
 	else {
- 		//puts("El contenido del archivo de prueba es:");
  		int i = 0;
 		while (feof(archivo) == 0) {
 			int dorsal = i % 24;
@@ -119,15 +119,13 @@ void cargar_archivo(sistema_t *sistema, char *nombrearch, lista_t *lista_equipos
 				if (dorsal == 0) {
 					// Equipo
 					equipo = strdup(trim(linea));
-					//printf("Pais: %s\n", equipo);
-					if (!sistema_agregar_equipo(sistema, equipo)) puts("ERROR GUARDAR EQUIPO");
+					sistema_agregar_equipo(sistema, equipo);
 					lista_insertar_ultimo(lista_equipos, equipo);
 				}
 				else {
 					// Jugador
 					char* jugador = strdup(trim(linea));
-					//printf("%i %s\n", dorsal, jugador);
-					if (!sistema_agregar_jugador(sistema, dorsal, equipo, jugador))  puts("ERROR GUARDAR JUGADOR");
+					sistema_agregar_jugador(sistema, dorsal, equipo, jugador);
 					free(jugador);
 				}
 			}
