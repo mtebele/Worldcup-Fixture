@@ -32,4 +32,6 @@ void mensaje_goles_jugador(char* jug, int dorsal, char* equipo, int goles);
 
 void mensaje_mostrar_resultado(char* eq1, int gol1, char* eq2, int gol2);
 
+void mensaje_jugador_no_inscripto(char* jugador);
+
 #endif // MENSAJES_H

@@ -209,7 +209,7 @@ char** sistema_listar_goleador(sistema_t* sistema)
 char** sistema_goles_jugador(sistema_t* sistema, char* nombre)
 {
 	jugador_t* jugador = hash_obtener(sistema->jugadores, nombre);
-	if (jugador == NULL) return NULL;
+	if (!jugador) return NULL;
 	char** datos = malloc(3 * sizeof(char*));
 	char buf_dorsal[2];
 	char buf_goles[2];	

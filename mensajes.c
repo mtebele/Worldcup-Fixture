@@ -8,8 +8,8 @@
 	IMPLEMENTACION DE LOS MENSAJES
 ****************************************/
 
-void mensaje_formato_invalido() {
-	printf("ERROR. Formato inválido.\n");
+void mensaje_comando_invalido() {
+	printf("ERROR. Comando inválido.\n");
 }
 
 void mensaje_error() {
