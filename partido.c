@@ -10,8 +10,8 @@
 
 struct partido {
 	bool jugado;
-	char *local;
-	char *visitante;
+	char *nombre_local;
+	char *nombre_visitante;
 	int goles_local;
 	int goles_visitante;
 };
@@ -24,8 +24,8 @@ partido_t *partido_crear()
 {
 	partido_t *partido = malloc(sizeof(partido_t));
 	if (!partido) return NULL;
-	partido->local = NULL;
-	partido->visitante = NULL;
+	partido->nombre_local = NULL;
+	partido->nombre_visitante = NULL;
 	partido->goles_local = -1;
 	partido->goles_visitante = -1;
 	partido->jugado = false;
@@ -35,8 +35,8 @@ partido_t *partido_crear()
 bool partido_agregar_local(partido_t *partido, char *equipo)
 {
 	if (!partido) return false;
-	if (!partido->local) {
-		partido->local = strdup(equipo);
+	if (!partido->nombre_local) {
+		partido->nombre_local = strdup(equipo);
 		return true;
 	}
 	return false;
@@ -45,8 +45,8 @@ bool partido_agregar_local(partido_t *partido, char *equipo)
 bool partido_agregar_visitante(partido_t *partido, char *equipo)
 {
 	if (!partido) return false;
-	if (!partido->visitante) {
-		partido->visitante = strdup(equipo);
+	if (!partido->nombre_visitante) {
+		partido->nombre_visitante = strdup(equipo);
 		return true;
 	}
 	return false;
@@ -55,8 +55,8 @@ bool partido_agregar_visitante(partido_t *partido, char *equipo)
 bool partido_hay_clasificados(partido_t *partido)
 {
 	if (!partido) return false;
-	bool hay_local = (partido->local != NULL);
-	bool hay_visita = (partido->visitante != NULL);
+	bool hay_local = (partido->nombre_local != NULL);
+	bool hay_visita = (partido->nombre_visitante != NULL);
 	return (hay_local && hay_visita);
 }
 
@@ -74,20 +74,20 @@ char* partido_ganador(partido_t *partido)
 	if (!partido || !partido->jugado) return NULL;
 	int resultado = partido->goles_local - partido->goles_visitante;
 	if (resultado > 0)
-		return partido_nom_local(partido);
-	return partido_nom_visitante(partido);
+		return partido_nombre_local(partido);
+	return partido_nombre_visitante(partido);
 }
 
-char* partido_nom_local(partido_t *partido)
+char* partido_nombre_local(partido_t *partido)
 {
 	if (!partido) return NULL;	
-	return partido->local;
+	return partido->nombre_local;
 }
 
-char* partido_nom_visitante(partido_t *partido)
+char* partido_nombre_visitante(partido_t *partido)
 {
 	if (!partido) return NULL;	
-	return partido->visitante;
+	return partido->nombre_visitante;
 }
 
 int partido_goles_local(partido_t *partido)
@@ -111,9 +111,9 @@ bool partido_jugado(partido_t *partido)
 void partido_destruir(partido_t *partido)
 {
 	if (!partido) return;
-	if (partido->local)
-		free(partido->local);
-	if (partido->visitante)
-		free(partido->visitante);
+	if (partido->nombre_local)
+		free(partido->nombre_local);
+	if (partido->nombre_visitante)
+		free(partido->nombre_visitante);
 	free(partido);
 }

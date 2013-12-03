@@ -32,7 +32,7 @@ int cmp_goles(const void *s1, const void *s2)
 	return 0;
 }
 
-void listar_jug_dorsal(lista_t *lista, jugador_t **plantel)
+void listar_jugadores_dorsal(lista_t *lista, jugador_t **plantel)
 {
 	for (int i = 0; i < MAX_JUG; i++) {
 		jugador_t* jugador = plantel[i];
@@ -49,20 +49,11 @@ void listar_jug_dorsal(lista_t *lista, jugador_t **plantel)
 	}
 }
 
-void listar_jug_nombre(sistema_t *sistema, lista_t *lista, jugador_t **plantel)
+void listar_jugadores_nombre(sistema_t *sistema, lista_t *lista, equipo_t *equipo)
 {
-		
-	abb_t* abb_jugadores = abb_crear(sistema->comparar, NULL);	
-	if(!abb_jugadores) return;
-
-	for (int i = 0; i < MAX_JUG; i++) {
-		jugador_t* jugador = plantel[i]; 
-		char* nombre = jugador_nombre(jugador);			
-		abb_guardar(abb_jugadores, nombre, jugador);
-		free(nombre);
-	}
-
+	abb_t* abb_jugadores = equipo_plantel_nombre(equipo);
 	abb_iter_t* abb_iter = abb_iter_in_crear(abb_jugadores);
+	
 	while (!abb_iter_in_al_final(abb_iter)) {
 		const char *actual = abb_iter_in_ver_actual(abb_iter);
 		jugador_t* jugador = hash_obtener(sistema->jugadores, actual);
@@ -79,9 +70,8 @@ void listar_jug_nombre(sistema_t *sistema, lista_t *lista, jugador_t **plantel)
 	}
 
 	abb_iter_in_destruir(abb_iter);
-	abb_destruir(abb_jugadores);
-
 }
+
  /******************************************************************
  *                IMPLEMENTACION DE LAS PRIMITIVAS
  ******************************************************************/
@@ -134,8 +124,8 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 	if (!partido_hay_clasificados(partido))
 		return RESULTADO_NOEXISTE;
 
-	char *nombre_local = partido_nom_local(partido);
-	char *nombre_visitante = partido_nom_visitante(partido);
+	char *nombre_local = partido_nombre_local(partido);
+	char *nombre_visitante = partido_nombre_visitante(partido);
 
 	bool ok = partido_jugar(partido, goles_local, goles_visitante);
 	if (!ok) return RESULTADO_YAEXISTE;
@@ -197,15 +187,12 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, char* nombre)
 	jugador_t** plantel = equipo_plantel(equipo);
 	upcase(modo);
 
-	if (strcmp(modo, "DORSAL") == 0) {
-		listar_jug_dorsal(lista, plantel);
-	}
-
-	else if (strcmp(modo, "NOMBRE") == 0) {
-		listar_jug_nombre(sistema, lista, plantel);		
-	}
-
-	else printf("Modo de consulta inválido\n");
+	if (strcmp(modo, "DORSAL") == 0)
+		listar_jugadores_dorsal(lista, plantel);
+	else if (strcmp(modo, "NOMBRE") == 0)
+		listar_jugadores_nombre(sistema, lista, equipo);
+	else
+		printf("Modo de consulta inválido\n");
 
 	return lista;
 }
@@ -252,10 +239,10 @@ char** sistema_mostrar_resultado(sistema_t* sistema, char* idr)
 		char buf_local[2];
 		char buf_visita[2];
 		
-		datos[0] = partido_nom_local(partido);
+		datos[0] = partido_nombre_local(partido);
 		snprintf(buf_local, 10, "%d", partido_goles_local(partido));
 		datos[1] = strdup(buf_local);
-		datos[2] = partido_nom_visitante(partido);
+		datos[2] = partido_nombre_visitante(partido);
 		snprintf(buf_visita, 10, "%d", partido_goles_visitante(partido));
 		datos[3] = strdup(buf_visita);
 	}		
@@ -299,9 +286,6 @@ bool sistema_cargar_fixture(sistema_t* sistema, lista_t* lista)
 	return fixture_cargar(sistema->fixture, lista);
 }
 
-// Destruye el sistema.
-// Pre: El sistema fue creado.
-// Post: El sistema es destruido.
 void sistema_destruir(sistema_t* sistema)
 {
 	fixture_destruir(sistema->fixture);
