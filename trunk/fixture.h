@@ -15,11 +15,14 @@
 
 typedef struct fixture fixture_t;
 
-int obtener_instancia(const char *idr, size_t n);
-
 /******************************************************
-                PRIMITIVAS DE JUGADOR
+                PRIMITIVAS DE FIXTURE
 ******************************************************/
+
+// Determina el numero de partido asociado al idr,
+// respecto de un numero n de partidos.
+// Post: Devuelve el numero de partido asociado al idr
+int obtener_instancia(const char *idr, size_t n);
 
 // Crea un fixture con la cantidad de partidos recibida.
 // Post: Crea un fixture con tantos partidos como can-

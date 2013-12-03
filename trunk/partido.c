@@ -74,17 +74,17 @@ char* partido_ganador(partido_t *partido)
 	if (!partido || !partido->jugado) return NULL;
 	int resultado = partido->goles_local - partido->goles_visitante;
 	if (resultado > 0)
-		return partido_local(partido);
-	return partido_visitante(partido);
+		return partido_nom_local(partido);
+	return partido_nom_visitante(partido);
 }
 
-char* partido_local(partido_t *partido)
+char* partido_nom_local(partido_t *partido)
 {
 	if (!partido) return NULL;	
 	return partido->local;
 }
 
-char* partido_visitante(partido_t *partido)
+char* partido_nom_visitante(partido_t *partido)
 {
 	if (!partido) return NULL;	
 	return partido->visitante;
