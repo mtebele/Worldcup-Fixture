@@ -13,6 +13,7 @@
 struct equipo {
 	char* nombre;
 	jugador_t** plantel;
+	abb_t* plantel_nombre;
 	size_t cant_jugadores;
 };
 
@@ -29,6 +30,12 @@ equipo_t *equipo_crear(char* nombre)
 		free(equipo);
 		return NULL;
 	}
+	equipo->plantel_nombre = abb_crear(strcmp, NULL);
+	if (!equipo->plantel_nombre) {
+		free(equipo->plantel);
+		free(equipo);
+		return NULL;		
+	}
 	equipo->nombre = strdup(nombre);
 	equipo->cant_jugadores = 0;
 	return equipo;
@@ -36,10 +43,12 @@ equipo_t *equipo_crear(char* nombre)
 
 bool equipo_inscribir(equipo_t *equipo, jugador_t *jugador)
 {
-	int cant_jugadores = equipo->cant_jugadores;
-	if (!equipo || cant_jugadores == MAX_JUG)
+	if (!equipo || equipo->cant_jugadores == MAX_JUG)
 		return false;
 	equipo->plantel[equipo->cant_jugadores++] = jugador;
+	char* nombre = jugador_nombre(jugador);
+	abb_guardar(equipo->plantel_nombre, nombre, jugador);
+	free(nombre);
 	return true;
 }
 
@@ -59,10 +68,16 @@ jugador_t** equipo_plantel(equipo_t *equipo)
 	return equipo->plantel;
 }
 
+abb_t* equipo_plantel_nombre(equipo_t *equipo)
+{
+	return equipo->plantel_nombre;
+}
+
 void equipo_destruir(void *equipo)
 {
-	equipo_t *team = (equipo_t*)equipo;
-	free(team->plantel);
-	free(team->nombre);
-	free(team);
+	equipo_t *equipo_dest = (equipo_t*)equipo;
+	free(equipo_dest->plantel);
+	abb_destruir(equipo_dest->plantel_nombre);
+	free(equipo_dest->nombre);
+	free(equipo_dest);
 }

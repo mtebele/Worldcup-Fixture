@@ -7,6 +7,7 @@
 #include <stddef.h>
 #include "jugador.h"
 #include "lista.h"
+#include "abb.h"
 
 /*****************************************************
           DEFINICION DE LOS TIPOS DE DATOS
@@ -45,6 +46,11 @@ char* equipo_nombre(equipo_t *equipo);
 // Pre: el equipo fue creado.
 // Post: Devuelve el plantel del equipo.
 jugador_t** equipo_plantel(equipo_t *equipo);
+
+// Obtiene el plantel del equipo en un abb.
+// Pre: el equipo fue creado.
+// Post: Devuelve el plantel del equipo.
+abb_t* equipo_plantel_nombre(equipo_t *equipo);
 
 // Agrega un gol al jugador de dorsal pasado por parámetro
 // Pre: El equipo fue creado.

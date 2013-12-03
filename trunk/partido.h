@@ -40,27 +40,27 @@ bool partido_agregar_visitante(partido_t *partido, char *eq);
 // Post: Devuelve true si existe local y visitante, false en caso contrario.
 bool partido_hay_clasificados(partido_t *partido);
 
-// Simula el resultado de un partido
-// Pre: El partido fue creado
+// Simula el resultado de un partido.
+// Pre: El partido fue creado.
 // Post: Marca el partido como realizado y actualiza la información del mismo.
 bool partido_jugar(partido_t *partido, int gloc, int gvis);
 
-// Obtiene el ganador del partido
-// Pre: el partido fue creado
-// Post: devuelve el nombre del equipo ganador
+// Obtiene el ganador del partido.
+// Pre: el partido fue creado.
+// Post: devuelve el nombre del equipo ganador.
 char* partido_ganador(partido_t *partido);
 
-// Obtiene el local del partido
-// Pre: el partido fue creado
-// Post: devuelve el nombre del equipo local
-char* partido_nom_local(partido_t *partido);
+// Obtiene el nombre del equipo local del partido.
+// Pre: el partido fue creado.
+// Post: devuelve el nombre del equipo local.
+char* partido_nombre_local(partido_t *partido);
 
-// Obtiene el visitante del partido
-// Pre: el partido fue creado
-// Post: devuelve el nombre del equipo visitante
-char* partido_nom_visitante(partido_t *partido);
+// Obtiene el nombre del equipo visitante del partido.
+// Pre: el partido fue creado.
+// Post: devuelve el nombre del equipo visitante.
+char* partido_nombre_visitante(partido_t *partido);
 
-// Obtiene los goles del local
+// Obtiene los goles del equipo local.
 // Pre: El partido fue creado.
 // Post: Devuelve la cantidad de goles del equipo local.
 int partido_goles_local(partido_t *partido);
