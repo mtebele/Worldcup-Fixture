@@ -32,6 +32,56 @@ int cmp_goles(const void *s1, const void *s2)
 	return 0;
 }
 
+void listar_jug_dorsal(lista_t *lista, jugador_t **plantel)
+{
+	for (int i = 0; i < MAX_JUG; i++) {
+		jugador_t* jugador = plantel[i];
+		char buf_dorsal[2];
+		char buf_goles[2];
+		char **datos = malloc(sizeof(char*) * 3);
+		datos[0] = jugador_nombre(jugador);
+		snprintf(buf_dorsal, 3, "%d", jugador_dorsal(jugador));
+		datos[1] = strdup(buf_dorsal);
+		snprintf(buf_goles, 10, "%d", jugador_goles(jugador));
+		datos[2] = strdup(buf_goles);
+		
+		lista_insertar_ultimo(lista, datos);
+	}
+}
+
+void listar_jug_nombre(sistema_t *sistema, lista_t *lista, jugador_t **plantel)
+{
+		
+	abb_t* abb_jugadores = abb_crear(sistema->comparar, NULL);	
+	if(!abb_jugadores) return;
+
+	for (int i = 0; i < MAX_JUG; i++) {
+		jugador_t* jugador = plantel[i]; 
+		char* nombre = jugador_nombre(jugador);			
+		abb_guardar(abb_jugadores, nombre, jugador);
+		free(nombre);
+	}
+
+	abb_iter_t* abb_iter = abb_iter_in_crear(abb_jugadores);
+	while (!abb_iter_in_al_final(abb_iter)) {
+		const char *actual = abb_iter_in_ver_actual(abb_iter);
+		jugador_t* jugador = hash_obtener(sistema->jugadores, actual);
+		char buf_dorsal[2];
+		char buf_goles[2];
+		char **datos = malloc(sizeof(char*) * 3);
+		datos[0] = jugador_nombre(jugador);
+		snprintf(buf_dorsal, 3, "%d", jugador_dorsal(jugador));
+		datos[1] = strdup(buf_dorsal);
+		snprintf(buf_goles, 10, "%d", jugador_goles(jugador));
+		datos[2] = strdup(buf_goles);
+		lista_insertar_ultimo(lista, datos);
+		abb_iter_in_avanzar(abb_iter);
+	}
+
+	abb_iter_in_destruir(abb_iter);
+	abb_destruir(abb_jugadores);
+
+}
  /******************************************************************
  *                IMPLEMENTACION DE LAS PRIMITIVAS
  ******************************************************************/
@@ -84,8 +134,8 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 	if (!partido_hay_clasificados(partido))
 		return RESULTADO_NOEXISTE;
 
-	char *nombre_local = partido_local(partido);
-	char *nombre_visitante = partido_visitante(partido);
+	char *nombre_local = partido_nom_local(partido);
+	char *nombre_visitante = partido_nom_visitante(partido);
 
 	bool ok = partido_jugar(partido, goles_local, goles_visitante);
 	if (!ok) return RESULTADO_YAEXISTE;
@@ -139,53 +189,22 @@ lista_t* sistema_listar_jugadores(sistema_t* sistema, char* modo, char* nombre)
 	if (!equipo) return NULL;
 
 	lista_t* lista = lista_crear();
-	if (!lista) return NULL;
+	if (!lista) {
+		free(equipo);
+		return NULL;
+	}
 
 	jugador_t** plantel = equipo_plantel(equipo);
 	upcase(modo);
 
 	if (strcmp(modo, "DORSAL") == 0) {
-		for (int i = 0; i < MAX_JUG; i++) {
-			jugador_t* jugador = plantel[i];
-			char buf_dorsal[2];
-			char buf_goles[2];
-			char **datos = malloc(sizeof(char*) * 3);
-			datos[0] = jugador_nombre(jugador);
-			snprintf(buf_dorsal, 3, "%d", jugador_dorsal(jugador));
-			datos[1] = strdup(buf_dorsal);
-			snprintf(buf_goles, 10, "%d", jugador_goles(jugador));
-			datos[2] = strdup(buf_goles);
-			
-			lista_insertar_ultimo(lista, datos);
-		}
+		listar_jug_dorsal(lista, plantel);
 	}
-	else if (strcmp(modo, "NOMBRE") == 0) {
-		abb_t* abb_jugadores = abb_crear(sistema->comparar, NULL);		
-		for (int i = 0; i < MAX_JUG; i++) {
-			jugador_t* jugador = plantel[i]; 
-			char* nombre = jugador_nombre(jugador);			
-			abb_guardar(abb_jugadores, nombre, jugador);
-			free(nombre);
-		}
 
-		abb_iter_t* abb_iter = abb_iter_in_crear(abb_jugadores);
-		while (!abb_iter_in_al_final(abb_iter)) {
-			const char *actual = abb_iter_in_ver_actual(abb_iter);
-			jugador_t* jugador = hash_obtener(sistema->jugadores, actual);
-			char buf_dorsal[2];
-			char buf_goles[2];
-			char **datos = malloc(sizeof(char*) * 3);
-			datos[0] = jugador_nombre(jugador);
-			snprintf(buf_dorsal, 3, "%d", jugador_dorsal(jugador));
-			datos[1] = strdup(buf_dorsal);
-			snprintf(buf_goles, 10, "%d", jugador_goles(jugador));
-			datos[2] = strdup(buf_goles);
-			lista_insertar_ultimo(lista, datos);
-			abb_iter_in_avanzar(abb_iter);
-		}
-		abb_iter_in_destruir(abb_iter);
-		abb_destruir(abb_jugadores);
+	else if (strcmp(modo, "NOMBRE") == 0) {
+		listar_jug_nombre(sistema, lista, plantel);		
 	}
+
 	else printf("Modo de consulta inválido\n");
 
 	return lista;
@@ -233,10 +252,10 @@ char** sistema_mostrar_resultado(sistema_t* sistema, char* idr)
 		char buf_local[2];
 		char buf_visita[2];
 		
-		datos[0] = partido_local(partido);
+		datos[0] = partido_nom_local(partido);
 		snprintf(buf_local, 10, "%d", partido_goles_local(partido));
 		datos[1] = strdup(buf_local);
-		datos[2] = partido_visitante(partido);
+		datos[2] = partido_nom_visitante(partido);
 		snprintf(buf_visita, 10, "%d", partido_goles_visitante(partido));
 		datos[3] = strdup(buf_visita);
 	}		

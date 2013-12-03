@@ -53,12 +53,12 @@ char* partido_ganador(partido_t *partido);
 // Obtiene el local del partido
 // Pre: el partido fue creado
 // Post: devuelve el nombre del equipo local
-char* partido_local(partido_t *partido);
+char* partido_nom_local(partido_t *partido);
 
 // Obtiene el visitante del partido
 // Pre: el partido fue creado
 // Post: devuelve el nombre del equipo visitante
-char* partido_visitante(partido_t *partido);
+char* partido_nom_visitante(partido_t *partido);
 
 // Obtiene los goles del local
 // Pre: El partido fue creado.
