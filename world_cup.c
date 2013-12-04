@@ -62,6 +62,7 @@ void ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int
 		free(datos);		
 	}
 	else if (comparar(comando, "GOLES_JUGADOR")) {
+		//pide modularizar esto
 		char* jugador = parametros[0];
 		char** datos = sistema_goles_jugador(sistema, jugador);
 		
@@ -78,6 +79,7 @@ void ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int
 		}
 	}
 	else if (comparar(comando, "MOSTRAR_RESULTADO")){
+			//pide modularizar esto			
 			char** datos = sistema_mostrar_resultado(sistema, parametros[0]);
 			if (datos) {
 				char* equipo1 = datos[0];
@@ -134,7 +136,12 @@ void cargar_archivo(sistema_t *sistema, char *nombrearch, lista_t *lista_equipos
 
 	archivo = fopen(nombrearch, "r");
 	lista_t *equipos = lista_crear();
-	
+	if (!equipos){
+		fclose(archivo);
+		return;
+	}
+		
+
 	if (!archivo)
 		puts("Error de apertura del archivo.");
 	else {

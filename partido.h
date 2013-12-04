@@ -18,7 +18,7 @@
 typedef struct partido partido_t;
 
 /******************************************************
-                PRIMITIVAS DE JUGADOR
+                PRIMITIVAS DE PARTIDO
 ******************************************************/
 
 // Crea un partido nuevo.

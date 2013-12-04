@@ -37,6 +37,7 @@ bool partido_agregar_local(partido_t *partido, char *equipo)
 	if (!partido) return false;
 	if (!partido->nombre_local) {
 		partido->nombre_local = strdup(equipo);
+		if (!partido->nombre_local) return false;
 		return true;
 	}
 	return false;
@@ -47,6 +48,7 @@ bool partido_agregar_visitante(partido_t *partido, char *equipo)
 	if (!partido) return false;
 	if (!partido->nombre_visitante) {
 		partido->nombre_visitante = strdup(equipo);
+		if (!partido->nombre_local) return false;
 		return true;
 	}
 	return false;
