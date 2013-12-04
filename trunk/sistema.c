@@ -23,10 +23,14 @@ struct sistema
  *                		FUNCIONES AUXILIARES
  ******************************************************************/
 
-int cmp_goles(const void *s1, const void *s2)
+//Compara los goles de dos jugadores
+//Pre: Jugadores creados
+//Post: Devuelve 1 si el primer jugador tiene más goles, -1 si el
+//segundo tiene más goles y 0 si tienen los mismos goles.
+int cmp_goles(const void *jugador1, const void *jugador2)
 {
-	jugador_t* jug1 = (jugador_t*)s1;
-	jugador_t* jug2 = (jugador_t*)s2;
+	jugador_t* jug1 = (jugador_t*)jugador1;
+	jugador_t* jug2 = (jugador_t*)jugador2;
 	if (jugador_goles(jug1) < jugador_goles(jug2)) return -1;
 	if (jugador_goles(jug1) > jugador_goles(jug2)) return 1;
 	return 0;
@@ -53,7 +57,7 @@ void listar_jugadores_nombre(sistema_t *sistema, lista_t *lista, equipo_t *equip
 {
 	abb_t* abb_jugadores = equipo_plantel_nombre(equipo);
 	abb_iter_t* abb_iter = abb_iter_in_crear(abb_jugadores);
-	
+	//a partir de acá dice que no es O(k)
 	while (!abb_iter_in_al_final(abb_iter)) {
 		const char *actual = abb_iter_in_ver_actual(abb_iter);
 		jugador_t* jugador = hash_obtener(sistema->jugadores, actual);
@@ -72,6 +76,27 @@ void listar_jugadores_nombre(sistema_t *sistema, lista_t *lista, equipo_t *equip
 	abb_iter_in_destruir(abb_iter);
 }
 
+void actualizar_jugadores(equipo_t *local, equipo_t *visitante, char **vec_parametros)
+{
+	int goles_local = atoi(vec_parametros[1]);
+	int goles_visitante = atoi(vec_parametros[2]);
+	int i = 0;
+	int offset_local = 3;
+	while (i < goles_local) {
+		int dorsal = atoi(vec_parametros[i+offset_local]);
+		equipo_agregar_gol(local, dorsal);
+		i++;
+	}
+
+	int offset_visita = i + 3;
+	i = 0;
+	while (i < goles_visitante) {
+		int dorsal = atoi(vec_parametros[i+offset_visita]);
+		equipo_agregar_gol(visitante, dorsal);
+		i++;
+	}
+}	
+
  /******************************************************************
  *                IMPLEMENTACION DE LAS PRIMITIVAS
  ******************************************************************/
@@ -89,14 +114,14 @@ sistema_t* sistema_crear(sistema_comparar_clave_t cmp)
 	}
 	sistema->equipos = hash_crear(equipo_destruir);
 	if (!sistema->equipos) {
-		free(sistema->jugadores);
+		hash_destruir(sistema->jugadores);
 		free(sistema);
 		return NULL;
 	}
 	sistema->goleadores = heap_crear(cmp_goles);
 	if (!sistema->goleadores) {
-		free(sistema->jugadores);
-		free(sistema->equipos);
+		hash_destruir(sistema->jugadores);
+		hash_destruir(sistema->equipos);
 		free(sistema);
 		return NULL;
 	}
@@ -113,8 +138,8 @@ size_t sistema_cantidad_equipos(sistema_t* sistema)
 resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[])
 {
 	char* idr = vec_parametros[0];
-	int goles_local = atoi(vec_parametros[1]);
-	int goles_visitante = atoi(vec_parametros[2]);
+	int goles_local = atoi(vec_parametros[1]);//cuidado con atoi
+	int goles_visitante = atoi(vec_parametros[2]);//cuidado con atoi
 	size_t cantidad = sistema_cantidad_equipos(sistema);
 	
 	/*Simulo el partido*/
@@ -134,21 +159,7 @@ resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[]
 	equipo_t* visitante = hash_obtener(sistema->equipos, nombre_visitante);
 	
 	/*Actualizo info de jugadores de los equipos involucrados*/
-	int i = 0;
-	int offset_local = 3;
-	while (i < goles_local) {
-		int dorsal = atoi(vec_parametros[i+offset_local]);
-		equipo_agregar_gol(local, dorsal);
-		i++;
-	}
-	
-	int offset_visita = i + 3;
-	i = 0;
-	while (i < goles_visitante) {
-		int dorsal = atoi(vec_parametros[i+offset_visita]);
-		equipo_agregar_gol(visitante, dorsal);
-		i++;
-	}
+	actualizar_jugadores(local, visitante, vec_parametros);	
 
 	/*Actualizo los goleadores del torneo*/	
 	heap_heapify(sistema->goleadores);
