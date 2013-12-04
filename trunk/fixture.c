@@ -15,7 +15,7 @@ struct fixture {
 };
 
 /***************************************************
-		IMPLEMENTACION PRIMITIVAS DE JUGADOR
+		IMPLEMENTACION PRIMITIVAS DE FIXTURE
 ****************************************************/
 
 int obtener_instancia(const char *idr, size_t n)
@@ -50,6 +50,7 @@ fixture_t *fixture_crear(size_t cantidad)
 bool fixture_cargar(fixture_t* fixture, lista_t* lista)
 {
 	lista_iter_t* iter = lista_iter_crear(lista);
+	if (!iter) return false;
 	int i = 0;
 	partido_t* partido;
 	while (!lista_iter_al_final(iter)) {
