@@ -11,6 +11,46 @@
 #define comparar(a,b) strcmp(a,b)==0
 
 /****************************************
+		  FUNCIONES AUXILIARES
+****************************************/
+
+void ejecutar_goles_jugador(char* jugador, sistema_t* sistema)
+{
+	char** datos = sistema_goles_jugador(sistema, jugador);
+		
+	if (!datos)
+		mensaje_jugador_no_inscripto(jugador);
+	else {
+		int dorsal = atoi(datos[0]);
+		char* equipo = datos[1];
+		int goles = atoi(datos[2]);
+		mensaje_goles_jugador(jugador, dorsal, equipo, goles);
+		for (int i=0; i < 3; i++)				
+			free(datos[i]);
+		free(datos);				
+	}
+}
+
+void ejecutar_mostrar_resultado(char* idr, sistema_t* sistema)
+{
+	char** datos = sistema_mostrar_resultado(sistema, idr);
+	
+	if (!datos)
+		mensaje_resultado_no_existente(idr);
+	else {
+		char* equipo1 = datos[0];
+		int goles1 = atoi(datos[1]);
+		char* equipo2 = datos[2];
+		int goles2 = atoi(datos[3]);
+		
+		mensaje_mostrar_resultado(equipo1, goles1, equipo2, goles2);
+		free(datos[1]);
+		free(datos[3]);
+		free(datos);
+	}
+}
+
+/****************************************
 		DEFINICION DE FUNCIONES
 ****************************************/
 
@@ -61,40 +101,14 @@ void ejecutar_servicio(sistema_t *sistema, char *comando, char **parametros, int
 				free(datos[i]);
 		free(datos);		
 	}
-	else if (comparar(comando, "GOLES_JUGADOR")) {
-		//pide modularizar esto
+	else if (comparar(comando, "GOLES_JUGADOR")) {		
 		char* jugador = parametros[0];
-		char** datos = sistema_goles_jugador(sistema, jugador);
-		
-		if (!datos)
-			mensaje_jugador_no_inscripto(jugador);
-		else {
-			int dorsal = atoi(datos[0]);
-			char* equipo = datos[1];
-			int goles = atoi(datos[2]);
-			mensaje_goles_jugador(jugador, dorsal, equipo, goles);
-			for (int i=0; i < 3; i++)				
-					free(datos[i]);
-			free(datos);				
-		}
+		ejecutar_goles_jugador(jugador, sistema);
 	}
-	else if (comparar(comando, "MOSTRAR_RESULTADO")){
-			//pide modularizar esto			
-			char** datos = sistema_mostrar_resultado(sistema, parametros[0]);
-			if (datos) {
-				char* equipo1 = datos[0];
-				int goles1 = atoi(datos[1]);
-				char* equipo2 = datos[2];
-				int goles2 = atoi(datos[3]);
-				
-				mensaje_mostrar_resultado(equipo1, goles1, equipo2, goles2);
-				free(datos[1]);
-				free(datos[3]);
-				free(datos);
-			}
-			else
-				mensaje_resultado_no_existente(parametros[0]);
-		}
+	else if (comparar(comando, "MOSTRAR_RESULTADO")) {
+		char* idr = parametros[0];
+		ejecutar_mostrar_resultado(idr, sistema);
+	}
 	else if (!comparar(comando, ""))
 		mensaje_comando_invalido();
 }
@@ -141,7 +155,6 @@ void cargar_archivo(sistema_t *sistema, char *nombrearch, lista_t *lista_equipos
 		return;
 	}
 		
-
 	if (!archivo)
 		puts("Error de apertura del archivo.");
 	else {

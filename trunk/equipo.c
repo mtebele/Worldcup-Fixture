@@ -65,7 +65,6 @@ void equipo_agregar_gol(equipo_t *equipo, int dorsal)
 
 jugador_t** equipo_plantel(equipo_t *equipo)
 {
-	//En el peor de los casos, sacarlo como const
 	return equipo->plantel;
 }
 

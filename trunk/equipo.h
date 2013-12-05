@@ -8,6 +8,7 @@
 #include "jugador.h"
 #include "lista.h"
 #include "abb.h"
+#include "utils.h"
 
 /*****************************************************
           DEFINICION DE LOS TIPOS DE DATOS
@@ -18,9 +19,6 @@ y un vector de jugadores, cada posición del mismo es-
 tará asociada al dorsal de cada jugador */
 
 typedef struct equipo equipo_t;
-
-// Clona una cadena con memoria dinámica
-char *strdup(const char *s);
 
 /******************************************************
                 PRIMITIVAS DE JUGADOR
@@ -62,6 +60,5 @@ void equipo_agregar_gol(equipo_t *equipo, int dorsal);
 // Pre: El equipo fue creado.
 // Post: El equipo es destruido.
 void equipo_destruir(void *equipo);
-
 
 #endif // EQUIPO_H

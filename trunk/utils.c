@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "utils.h"
 
-// Clona una cadena con memoria dinámica
 char *strdup(const char *s)
 {
     char *n = malloc(strlen(s) + 1);
