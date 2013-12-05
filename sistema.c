@@ -23,10 +23,10 @@ struct sistema
  *                		FUNCIONES AUXILIARES
  ******************************************************************/
 
-//Compara los goles de dos jugadores
-//Pre: Jugadores creados
-//Post: Devuelve 1 si el primer jugador tiene más goles, -1 si el
-//segundo tiene más goles y 0 si tienen los mismos goles.
+// Compara los goles de dos jugadores.
+// Pre: Los jugadores fueron creados.
+// Post: Devuelve 1 si el primer jugador tiene más goles, -1 si el
+// segundo tiene más goles y 0 si tienen los mismos goles.
 int cmp_goles(const void *jugador1, const void *jugador2)
 {
 	jugador_t* jug1 = (jugador_t*)jugador1;
@@ -36,6 +36,7 @@ int cmp_goles(const void *jugador1, const void *jugador2)
 	return 0;
 }
 
+// Inserta en una lista los jugadores ordenados por dorsal.
 void listar_jugadores_dorsal(lista_t *lista, jugador_t **plantel)
 {
 	for (int i = 0; i < MAX_JUG; i++) {
@@ -53,11 +54,11 @@ void listar_jugadores_dorsal(lista_t *lista, jugador_t **plantel)
 	}
 }
 
+// Inserta en una lista los jugadores ordenados por nombre.
 void listar_jugadores_nombre(sistema_t *sistema, lista_t *lista, equipo_t *equipo)
 {
 	abb_t* abb_jugadores = equipo_plantel_nombre(equipo);
 	abb_iter_t* abb_iter = abb_iter_in_crear(abb_jugadores);
-	//a partir de acá dice que no es O(k)
 	while (!abb_iter_in_al_final(abb_iter)) {
 		const char *actual = abb_iter_in_ver_actual(abb_iter);
 		jugador_t* jugador = hash_obtener(sistema->jugadores, actual);
@@ -138,8 +139,8 @@ size_t sistema_cantidad_equipos(sistema_t* sistema)
 resultado_t sistema_agregar_resultado(sistema_t* sistema, char* vec_parametros[])
 {
 	char* idr = vec_parametros[0];
-	int goles_local = atoi(vec_parametros[1]);//cuidado con atoi
-	int goles_visitante = atoi(vec_parametros[2]);//cuidado con atoi
+	int goles_local = atoi(vec_parametros[1]);
+	int goles_visitante = atoi(vec_parametros[2]);
 	size_t cantidad = sistema_cantidad_equipos(sistema);
 	
 	/*Simulo el partido*/

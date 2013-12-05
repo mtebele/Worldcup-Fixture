@@ -13,6 +13,9 @@
           DEFINICION DE LOS TIPOS DE DATOS
  ****************************************************/
 
+/* El fixture está compuesto de un vector de partidos,
+la cantidad de partidos, y el tamanio del fixture */
+
 typedef struct fixture fixture_t;
 
 /******************************************************

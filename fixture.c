@@ -59,7 +59,7 @@ bool fixture_cargar(fixture_t* fixture, lista_t* lista)
 			if (!partido) return false;
 			partido_agregar_local(partido, lista_iter_ver_actual(iter));
 		}
-		else{
+		else {
 			partido_agregar_visitante(partido, lista_iter_ver_actual(iter));
 			fixture->partidos[fixture->cantidad] = partido;
 			fixture->cantidad++;
@@ -71,9 +71,8 @@ bool fixture_cargar(fixture_t* fixture, lista_t* lista)
 	lista_iter_destruir(iter);
 
 	i = fixture_cantidad(fixture);
-	/*creo el resto de los partidos*/
-	while(i < fixture_tamanio(fixture))
-	{
+	/*Creo el resto de los partidos*/
+	while (i < fixture_tamanio(fixture)) {
 		partido = partido_crear();
 		fixture->partidos[i] = partido;
 		i++;
@@ -90,7 +89,6 @@ partido_t* fixture_partido(fixture_t *fixture, char* idr, size_t cantidad)
 	return NULL;
 }
 
-//devuelve el partido siguiente que le toca jugar
 partido_t* fixture_clasificar_equipo(fixture_t *fixture, char* idr, size_t cantidad)
 {
 	int pos = obtener_instancia(idr, cantidad - 1);

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include "utils.h"
 
 /*****************************************************
           DEFINICION DE LOS TIPOS DE DATOS
@@ -15,9 +16,6 @@
 * más la cantidad de goles */
 
 typedef struct jugador jugador_t;
-
-// Clona una cadena con memoria dinámica
-char *strdup(const char *s);
 
 /******************************************************
                 PRIMITIVAS DE JUGADOR
